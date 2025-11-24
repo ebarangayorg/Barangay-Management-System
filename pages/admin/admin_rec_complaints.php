@@ -42,7 +42,7 @@ $complaints = $contactsCollection->find([], ['sort' => ['date' => -1]]);
             </button>
             <div class="dropdown-content">
                 <a href="admin_rec_residents.php">Residents</a>
-                <a href="admin_rec_complaints.php">Complaints</a>
+                <a href="admin_rec_complaints.php" class="active">Complaints</a>
                 <a href="admin_rec_blotter.php">Blotter</a>
             </div>
         </div>
@@ -146,6 +146,12 @@ $complaints = $contactsCollection->find([], ['sort' => ['date' => -1]]);
 function toggleSidebar() {
     document.querySelector('.sidebar').classList.toggle('active');
 }
+
+document.querySelectorAll('.dropdown-container').forEach(container => {
+    if (container.querySelector('.dropdown-content a.active')) {
+        container.classList.add('active');
+    }
+});
 
 document.querySelectorAll('.dropdown-btn').forEach(btn => {
     btn.addEventListener('click', function () {

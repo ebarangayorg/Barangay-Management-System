@@ -58,7 +58,7 @@ $incidents = $incidentsCollection->find($filter);
           <div class="dropdown-content">
               <a href="admin_rec_residents.php">Residents</a>
               <a href="admin_rec_complaints.php">Complaints</a>
-              <a href="admin_rec_blotter.php">Blotter</a>
+              <a href="admin_rec_blotter.php" class="active">Blotter</a>
           </div>
       </div>
 
@@ -124,6 +124,7 @@ $incidents = $incidentsCollection->find($filter);
                             ? date("m/d/Y", strtotime($incident->date_filed)) 
                             : "—" ?>
                     </td>
+
                     <td><?= $incident->subject ?></td>
                     <td>
                         <span class="status <?= strtolower($incident->status) ?>">
@@ -318,18 +319,17 @@ function toggleSidebar() {
     document.querySelector('.sidebar').classList.toggle('active');
 }
 
-document.querySelectorAll('.dropdown-btn').forEach(button => {
-    button.addEventListener("click", function () {
-        const container = this.parentElement;
-
-        document.querySelectorAll(".dropdown-container").forEach(drop => {
-            if (drop !== container) drop.classList.remove("active");
-        });
-
-        container.classList.toggle("active");
-    });
+document.querySelectorAll('.dropdown-container').forEach(container => {
+    if (container.querySelector('.dropdown-content a.active')) {
+        container.classList.add('active');
+    }
 });
 
+document.querySelectorAll('.dropdown-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        this.parentElement.classList.toggle('active');
+    });
+});
 
 function openViewModal(data) {
     document.getElementById('v_case').textContent = data.case_no;

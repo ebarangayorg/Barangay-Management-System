@@ -36,7 +36,7 @@
                 <i class="bi bi-caret-down-fill dropdown-arrow"></i>
             </button>
             <div class="dropdown-content">
-                <a href="admin_rec_residents.php">Residents</a>
+                <a href="admin_rec_residents.php" class="active">Residents</a>
                 <a href="admin_rec_complaints.php">Complaints</a>
                 <a href="admin_rec_blotter.php">Blotter</a>
             </div>
@@ -304,6 +304,12 @@
 function toggleSidebar() {
     document.querySelector('.sidebar').classList.toggle('active');
 }
+
+document.querySelectorAll('.dropdown-container').forEach(container => {
+    if (container.querySelector('.dropdown-content a.active')) {
+        container.classList.add('active');
+    }
+});
 
 document.querySelectorAll('.dropdown-btn').forEach(btn => {
     btn.addEventListener('click', function () {
