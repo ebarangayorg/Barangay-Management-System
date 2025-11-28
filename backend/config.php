@@ -12,10 +12,6 @@ try {
     $contactsCollection = $database->contacts;
     $incidentsCollection = $database->incidents;
     $announcementCollection = $database->announcements;
-    $total_population = $residentsCollection->countDocuments();
-    $total_households = $residentsCollection->distinct('household_id');
-    $total_households_count = count($total_households);
-    
 } catch (Exception $e) {
     die("Error connecting to MongoDB: " . $e->getMessage());
 }
