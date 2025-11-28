@@ -80,6 +80,7 @@
                     <th style="width: 320px;">Image</th>
                     <th>Title</th>
                     <th>Details</th>
+                    <th>Location</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th style="width: 150px;">Action</th>
@@ -116,6 +117,10 @@
             <div class="mb-3">
                 <label>Details</label>
                 <textarea name="details" class="form-control" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label>Location</label>
+                <input type="text" name="location" class="form-control" required>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
@@ -169,6 +174,11 @@
                 <textarea id="edit-details" name="details" class="form-control" rows="3" required></textarea>
             </div>
 
+             <div class="mb-3">
+                <label>Location</label>
+                <input type="text" id="edit-location" name="location" class="form-control" required>
+            </div>
+
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label>Date</label>
@@ -213,7 +223,10 @@ function toggleSidebar() {
     document.querySelector('.sidebar').classList.toggle('active');
 }
 
-// ======================= GLOBAL FUNCTIONS =======================
+function truncateText(text, maxLength = 50) {
+    if (!text) return "";
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+}
 
 // Archive Modal
 function openArchiveModal(id) {
@@ -226,8 +239,10 @@ function openEditModal(button) {
     document.getElementById('edit-id').value = button.dataset.id;
     document.getElementById('edit-title').value = button.dataset.title;
     document.getElementById('edit-details').value = button.dataset.details;
+    document.getElementById('edit-location').value = button.dataset.location;
     document.getElementById('edit-date').value = button.dataset.date;
     document.getElementById('edit-time').value = button.dataset.time;
+    
 
     const editPreview = document.getElementById('edit-preview');
     if(button.dataset.image){
@@ -270,7 +285,8 @@ fetch("../../backend/announcement_get.php")
         <tr>
             <td><img src="../../uploads/announcements/${item.image}" style="width:300px;height:auto;"></td>
             <td>${item.title}</td>
-            <td>${item.details}</td>
+            <td>${truncateText(item.details, 25)}</td>
+            <td>${item.location}</td>
             <td>${item.date}</td>
             <td>${item.time}</td>
             <td>
@@ -280,6 +296,7 @@ fetch("../../backend/announcement_get.php")
                     data-id="${item._id}"
                     data-title="${item.title.replace(/"/g,'&quot;')}"
                     data-details="${item.details.replace(/"/g,'&quot;')}"
+                    data-location="${item.location.replace(/"/g,'&quot;')}"
                     data-date="${item.date}"
                     data-time="${item.time}"
                     data-image="${item.image}">

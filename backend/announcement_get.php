@@ -15,6 +15,7 @@ foreach ($announcements as $a) {
         "_id" => (string)$a->_id,
         "title" => $a->title ?? "",
         "details" => $a->details ?? "",
+        "location" => $a->location ?? "",
         "date" => $a->date ?? "",
         "time" => $a->time ?? "",
         "image" => $a->image ?? ""

@@ -398,8 +398,7 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
     /* Fix alignment */
     display: flex;
     justify-content: space-between;
-    align-items: center;
-
+    align-items: flex-start;
     font-size: 14px;
     color: #222;
 }

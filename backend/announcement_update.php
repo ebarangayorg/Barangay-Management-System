@@ -4,6 +4,7 @@ require_once "config.php";
 $id = $_POST["id"];
 $title = $_POST["title"] ?? null;
 $details = $_POST["details"] ?? null;
+$location = $_POST["location"] ?? null;
 $date = $_POST["date"] ?? null;
 $time = $_POST["time"] ?? null;
 $status = $_POST["status"] ?? null; // NEW
@@ -12,6 +13,7 @@ $updateData = [];
 
 if ($title) $updateData["title"] = $title;
 if ($details) $updateData["details"] = $details;
+if ($location) $updateData["location"] =$location;
 if ($date) $updateData["date"] = $date;
 if ($time) $updateData["time"] = $time;
 if ($status) $updateData["status"] = $status; // NEW

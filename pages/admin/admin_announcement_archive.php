@@ -68,6 +68,7 @@ $announcements = $announcementCollection->find($filter);
                     <th>Image</th>
                     <th>Title</th>
                     <th>Details</th>
+                    <th>Location</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th>Action</th>
@@ -83,6 +84,7 @@ $announcements = $announcementCollection->find($filter);
                     </td>
                     <td><?= $item->title ?></td>
                     <td><?= $item->details ?></td>
+                    <td><?= $item->location ?? '-' ?></td>
                     <td><?= $item->date ?></td>
                     <td><?= $item->time ?></td>
                     <td>
@@ -118,6 +120,7 @@ $announcements = $announcementCollection->find($filter);
         <h4>Announcement Details</h4>
         <p><b>Title:</b> <span id="v_title"></span></p>
         <p><b>Details:</b> <span id="v_details"></span></p>
+        <p><b>Location:</b> <span id="v_location"></span></p>
         <p><b>Date:</b> <span id="v_date"></span></p>
         <p></p><b>Time:</b> <span id="v_time"></span></p>
         <p>
@@ -167,6 +170,7 @@ $announcements = $announcementCollection->find($filter);
 function openViewModal(data) {
     document.getElementById('v_title').textContent = data.title;
     document.getElementById('v_details').textContent = data.details;
+    document.getElementById('v_location').textContent = data.location;
     document.getElementById('v_date').textContent = data.date;
     document.getElementById('v_time').textContent = data.time;
     document.getElementById('v_image').src = data.image ? `../../uploads/announcements/${data.image}` : '';

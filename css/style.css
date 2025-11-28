@@ -419,3 +419,184 @@ footer {
     border-top: 1px solid #333;
     padding-top: 10px;
 }
+
+/* --------------- Home Announce Card --------------- */
+.home-announce-card {
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+}
+
+.home-announce-img {
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.home-announce-title {
+    min-height: 45px;
+}
+
+.home-announce-details {
+    min-height: 70px;
+}
+
+.home-announce-card * {
+    text-align: left !important;
+}
+.home-announce-img {
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.home-date {
+    display: inline-block !important;
+    text-align: left !important;
+    align-self: flex-start !important;
+}
+
+.home-location {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-align: left !important;
+}
+
+.home-announce-title {
+    min-height: 45px;
+    margin-top: 30px;
+    font-size: 22px;
+}
+
+.home-announce-details {
+    min-height: 70px;
+    margin-top: -20px;
+}
+
+.home-announce-card {
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+}
+
+.home-announce-card * {
+    text-align: left !important;
+}
+
+/* ----------- Announcement Page Card -------------- */
+.announcement-page-card {
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 6px 6px rgba(0,0,0,0.06);
+}
+
+.announcement-page-img {
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.announcement-page-card * {
+    text-align: left !important;
+}
+
+.announcement-page-date {
+    display: inline-block !important;
+    align-self: flex-start !important;
+}
+
+.announcement-page-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.announcement-page-title {
+    min-height: 45px;
+    margin-top: 30px;
+    font-size: 22px;
+}
+
+.announcement-page-details {
+    min-height: 70px;
+    margin-top: -20px;
+}
+
+/* ----------- See More Announcement Page Card -------------- */
+.see-more-announcement-container {
+  width: 95%;
+  max-width: 1200px; /* keeps it neat on large screens */
+  margin: 40px auto 60px auto; /* top & bottom margin */
+  padding: 20px;
+}
+
+.see-more-card {
+  width: 100%;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.see-more-announcement-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.see-more-announcement-date {
+  font-size: 13px;
+  color: #65676b;
+  margin-bottom: 30px;
+}
+
+.see-more-announcement-badges span {
+  font-size: 0.75rem;
+  margin-right: 5px;
+}
+
+.see-more-announcement-images {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.see-more-announcement-images img {
+  position: relative;
+  width: 48%;
+  border-radius: 8px;
+  object-fit: cover;
+  max-height: 300px;
+  display: block;
+  background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.2));
+}
+
+
+.see-more-announcement-text {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.see-more-announcement-button {
+  display: inline-block;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #28a745; 
+  border: 1px solid #28a745;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  margin-bottom: 15px;
+}
+.see-more-announcement-button i {
+  margin-right: 8px; /* space between arrow and text */
+  vertical-align: middle;
+}
+
+
+.see-more-announcement-button:hover {
+  background-color: #28a745; /* green fill on hover */
+  color: #fff; /* white text on hover */
+}

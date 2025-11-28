@@ -3,6 +3,7 @@ require_once "config.php";
 
 $title = $_POST["title"];
 $details = $_POST["details"];
+$location = $_POST["location"];
 $date = $_POST["date"];
 $time = $_POST["time"];
 
@@ -17,6 +18,7 @@ if (!empty($_FILES["photo"]["name"])) {
 $announcementCollection->insertOne([
     "title"   => $title,
     "details" => $details,
+    "location"=> $location,
     "date"    => $date,
     "time"    => $time,
     "image"   => $filename,
