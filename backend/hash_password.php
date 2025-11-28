@@ -1,5 +1,5 @@
 <?php
-$password = "012345";
+$password = "123456";
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 echo "Password to use in MongoDB: " . $hashed_password . "\n";
 ?>

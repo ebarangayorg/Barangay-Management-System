@@ -2,7 +2,6 @@
 session_start(); 
 require_once 'config.php'; 
 
-
 $email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
 
@@ -56,6 +55,8 @@ if ($isResidentForm) {
 session_regenerate_id(true);
 $_SESSION['email'] = $user['email'];
 $_SESSION['role'] = $userRole;
+$_SESSION['user_id'] = (string)$user['_id'];  
+$_SESSION['username'] = $user['email']; 
 
 if ($userRole === 'Resident' && $user['status'] === 'Pending') {
     echo "<script>alert('Account not yet approved. Please wait for admin approval.'); window.history.back();</script>";
