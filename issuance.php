@@ -28,7 +28,15 @@
             <h5>Barangay Clearance</h5>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry...</p>
             <p><strong>Price: ₱50</strong></p>
-            <a href="resident_login.php" class="btn btn-success">Request Now</a>
+            <?php if (isset($_SESSION['email'])): ?>
+            <a href="pages/resident/resident_rqs_service.php" class="btn btn-success">
+                Request Now
+            </a>
+        <?php else: ?>
+            <a href="resident_login.php" class="btn btn-success">
+                Request Now
+            </a>
+        <?php endif; ?>
         </div>
 
         <!-- Card 2 -->
@@ -37,7 +45,15 @@
             <h5>Certificate of Indigency</h5>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry...</p>
             <p><strong>Price: ₱50</strong></p>
-            <a href="resident_login.php" class="btn btn-success">Request Now</a>
+            <?php if (isset($_SESSION['email'])): ?>
+            <a href="pages/resident/resident_rqs_service.php" class="btn btn-success">
+                Request Now
+            </a>
+        <?php else: ?>
+            <a href="resident_login.php" class="btn btn-success">
+                Request Now
+            </a>
+        <?php endif; ?>
         </div>
 
         <!-- Card 3 -->
@@ -46,7 +62,15 @@
             <h5>Certificate of Residency</h5>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry...</p>
             <p><strong>Price: ₱50</strong></p>
-            <a href="resident_login.php" class="btn btn-success">Request Now</a>
+            <?php if (isset($_SESSION['email'])): ?>
+            <a href="pages/resident/resident_rqs_service.php" class="btn btn-success">
+                Request Now
+            </a>
+        <?php else: ?>
+            <a href="resident_login.php" class="btn btn-success">
+                Request Now
+            </a>
+        <?php endif; ?>
         </div>
 
         <!-- Card 4 -->
@@ -55,7 +79,15 @@
             <h5>Barangay Business Clearance</h5>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry...</p>
             <p><strong>Price: ₱50</strong></p>
-            <a href="resident_login.php" class="btn btn-success">Request Now</a>
+            <?php if (isset($_SESSION['email'])): ?>
+            <a href="pages/resident/resident_rqs_service.php" class="btn btn-success">
+                Request Now
+            </a>
+        <?php else: ?>
+            <a href="resident_login.php" class="btn btn-success">
+                Request Now
+            </a>
+        <?php endif; ?>
         </div>
     </div>
 
