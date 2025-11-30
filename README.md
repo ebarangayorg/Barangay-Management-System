@@ -25,7 +25,8 @@ The **Barangay Management System (BMS)** is a software project developed to prov
 > - The system may not be fully responsive across all devices, as it is under development.
 
 
-### Collaborators Of This Project
+## Collaborators Of Project
+<br>
 <p align="center">
   <a href="https://github.com/Gabecx">
     <img src="https://github.com/Gabecx.png" width="100"">
@@ -43,7 +44,7 @@ The **Barangay Management System (BMS)** is a software project developed to prov
     <img src="https://github.com/lurxdel.png" width="100">
   </a>
 </p>
-
+<br>
 
 ### Acknowledgment  
 We are grateful to our instructors for their guidance and support throughout the development of this project. This work reflects our learning journey and the collaborative efforts of the team.  
@@ -59,8 +60,8 @@ If you like my work or find it helpful, you can support me by:
 
 ## Disclaimer 
 <div align="center"> 
-  We do not own the images, names, or references included in this project; they are used purely as placeholders.  
-  All trademarks, service marks, trade names, and other intellectual property rights belong to their respective owners.  
+  We do not own the images, names, information or references included in this project they are used purely as placeholders. <br> 
+  All trademarks, service marks, trade names, and other intellectual property rights belong to their respective owners.  <br><br>
 
-  Made 💗 by <a href="https://github.com/lurxdel"><strong>Lurxdel</strong></a>
+  Made with 💗 by <a href="https://github.com/lurxdel"><strong>Lurxdel</strong></a>
 </div>
