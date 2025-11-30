@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="assets/img/BMS.png">
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/toast.css">
 </head>
 <body>
 
@@ -91,6 +92,30 @@
   <!-- Footer -->
   <?php include('includes/footer.php'); ?>
 
+<div id="toast" class="toast"></div>
+
+<script>
+function showToast(message, type = "error") {
+    const t = document.getElementById("toast");
+
+    t.className = "toast";
+
+    t.textContent = message;
+    t.classList.add(type);
+    t.classList.add("show");
+
+    setTimeout(() => {
+        t.classList.remove("show");
+    }, 3000);
+}
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<?php if (isset($_SESSION['toast'])): ?>
+<script>
+    showToast("<?= $_SESSION['toast']['msg'] ?>", "<?= $_SESSION['toast']['type'] ?>");
+</script>
+<?php unset($_SESSION['toast'], $_SESSION['toast_type']); endif; ?>
+
 </body>
 </html>

@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resident Login</title>
   <link rel="stylesheet" href="css/login.css">
+  <link rel="stylesheet" href="css/toast.css">
   <link rel="icon" type="image/png" href="assets/img/BMS.png">
 </head>
 <body>
@@ -52,7 +53,11 @@ function showToast(message, type = "error") {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <?php if (isset($_SESSION['toast'])): ?>
 <script>
-    showToast("<?= $_SESSION['toast'] ?>", "<?= $_SESSION['toast_type'] ?? 'error' ?>");
+    <?php if (is_array($_SESSION['toast'])): ?>
+        showToast("<?= $_SESSION['toast']['msg'] ?>", "<?= $_SESSION['toast']['type'] ?>");
+    <?php else: ?>
+        showToast("<?= $_SESSION['toast'] ?>", "<?= $_SESSION['toast_type'] ?? 'error' ?>");
+    <?php endif; ?>
 </script>
 <?php unset($_SESSION['toast'], $_SESSION['toast_type']); endif; ?>
 

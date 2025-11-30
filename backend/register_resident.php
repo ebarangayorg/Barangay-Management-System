@@ -1,5 +1,6 @@
 <?php
-require_once 'config.php'; 
+require_once 'config.php';
+session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -8,22 +9,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $existingUser = $usersCollection->findOne(["email" => $email]);
     if ($existingUser) {
-        die("Email already exists!");
+        $_SESSION['toast'] = ["msg" => "Email already exists!", "type" => "error"];
+        header("Location: ../register.php");
+        exit;
     }
 
     $userData = [
         "email" => $email,
         "password" => $password,
         "role" => "Resident",
-        "status" => "Pending",  
+        "status" => "Pending",
         "date_created" => new MongoDB\BSON\UTCDateTime()
     ];
 
     $insertUser = $usersCollection->insertOne($userData);
-    $userId = $insertUser->getInsertedId(); 
+    $userId = $insertUser->getInsertedId();
 
     $residentData = [
-        "user_id" => $userId,           
+        "user_id" => $userId,
         "first_name" => $_POST['fname'],
         "middle_name" => $_POST['mname'],
         "last_name" => $_POST['lname'],
@@ -43,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $residentsCollection->insertOne($residentData);
 
-    echo "<script>alert('Registration successful! Please wait for approval.'); window.location.href='../resident_login.php' </script>";
+    $_SESSION['toast'] = ["msg" => "Registration successful! Please wait for approval.", "type" => "success"];
+    header("Location: ../resident_login.php");
     exit;
 }
-?>

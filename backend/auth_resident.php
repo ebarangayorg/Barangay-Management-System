@@ -7,7 +7,8 @@ if (!isset($_SESSION['email']) || !isset($_SESSION['role'])) {
 }
 
 if ($_SESSION['role'] !== 'Resident') {
-    echo "<script>alert('Access denied: Residents only'); window.location.href='../../index.php';</script>";
+    $_SESSION['toast'] = ["msg" => "You are not authorized to access that page.", "type" => "error"];
+    header("Location: ../admin/admin_dashboard.php");
     exit;
 }
 ?>

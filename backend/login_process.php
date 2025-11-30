@@ -71,19 +71,31 @@ $_SESSION['email'] = $user['email'];
 $_SESSION['role'] = $userRole;
 $_SESSION['user_id'] = (string)$user['_id'];  
 $_SESSION['username'] = $user['email']; 
+$_SESSION['status'] = $user['status'];
 
 // Resident account status checks
 if ($userRole === 'Resident') {
+
     if ($user['status'] === 'Pending') {
+
+        // Only remove login values — keep session active
+        unset($_SESSION['email'], $_SESSION['role'], $_SESSION['user_id'], $_SESSION['username'], $_SESSION['status']);
+
         $_SESSION['toast'] = "Account is not approved yet, please wait for approval";
         $_SESSION['toast_type'] = "warn";
-        header("Location: $loginPage"); 
+
+        header("Location: $loginPage");
         exit();
     }
+
     if ($user['status'] === 'Rejected') {
+
+        unset($_SESSION['email'], $_SESSION['role'], $_SESSION['user_id'], $_SESSION['username'], $_SESSION['status']);
+
         $_SESSION['toast'] = "Account is rejected, please contact admin";
         $_SESSION['toast_type'] = "error";
-        header("Location: $loginPage"); 
+
+        header("Location: $loginPage");
         exit();
     }
 }

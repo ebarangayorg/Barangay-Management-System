@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Access</title>
   <link rel="stylesheet" href="css/login.css">
+  <link red="stylesheet" href="css/toast.css">
   <link rel="icon" type="image/png" href="assets/img/BMS.png">
 </head>
 <body>

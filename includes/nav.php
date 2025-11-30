@@ -25,13 +25,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                 <li class="nav-item"><a href="contact.php" class="nav-link <?= ($currentPage=='contact.php'?'active':'') ?>">Contact</a></li>
                 <li class="nav-item"><a href="calendar.php" class="nav-link <?= ($currentPage=='calendar.php'?'active':'') ?>">Calendar</a></li>
 
-                <?php if (isset($_SESSION['email'])): ?>
+                <?php if (isset($_SESSION['email']) && ($_SESSION['status'] ?? '') === 'Approved'): ?>
                     <li class="nav-item">
                         <a href="pages/resident/resident_dashboard.php" class="btn btn-success ms-3">
                             My Account 
                         </a>
                     </li>
-                    
                 <?php else: ?>
                     <li class="nav-item">
                         <a href="resident_login.php" class="btn btn-success ms-3">Login</a>
