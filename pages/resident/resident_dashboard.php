@@ -262,6 +262,32 @@ document.querySelector("input[name='profile_image']").addEventListener("change",
     }
 });
 </script>
+<script>
+async function loadEvents() {
+    const res = await fetch("../../backend/calendar_events.php");
+    const events = await res.json();
+
+    let eventsList = document.querySelector(".events");
+    if (!eventsList) return;
+
+    eventsList.innerHTML = "<h3>EVENTS</h3>";
+
+    events.forEach(event => {
+        eventsList.innerHTML += `
+            <div class="event-item">
+                <strong>${event.title}</strong><br>
+                ${event.details}<br>
+                📍 ${event.location}<br>
+                📅 ${event.date} ⏰ ${event.time}<br>
+                ${event.image ? `<img src="${event.image}" style="max-width:100px;">` : ""}
+                <hr>
+            </div>
+        `;
+    });
+}
+
+window.onload = loadEvents;
+</script>
 
 </body>
 </html>
