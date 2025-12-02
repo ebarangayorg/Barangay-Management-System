@@ -145,20 +145,37 @@
 
 <!-- View Modal -->
 <div class="modal fade" id="viewModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content p-3">
-        <h4>Announcement Details</h4>
-        <p><b>Title:</b> <span id="v_title"></span></p>
-        <p><b>Details:</b> <span id="v_details"></span></p>
-        <p><b>Location:</b> <span id="v_location"></span></p>
-        <p><b>Date:</b> <span id="v_date"></span></p>
-        <p></p><b>Time:</b> <span id="v_time"></span></p>
-        <p>
-            <b>Image:</b> 
-            <br>
-            <img id="v_image" src="" style="width:100%;height:auto;border-radius:5px;">
+      <div class="modal-header">
+        <h4 class="modal-title" id="v_title">Announcement Details</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Date & Time -->
+        <p class="text-muted mb-1">
+          <i class="bi bi-calendar"></i> <span id="v_date"></span>
+          &nbsp; | &nbsp; <i class="bi bi-clock"></i> <span id="v_time"></span>
         </p>
-        <button class="btn btn-secondary mt-2" data-bs-dismiss="modal">Close</button>
+
+        <!-- Location -->
+        <p class="text-muted mb-3">
+          <i class="bi bi-geo-alt"></i> <span id="v_location"></span>
+        </p>
+
+        <!-- Image -->
+        <div class="text-center mb-3">
+          <img id="v_image" src="" class="img-fluid rounded" style="max-height: 300px; object-fit: cover;">
+        </div>
+
+        <!-- Details -->
+        <p id="v_details" style="white-space: pre-wrap;"></p>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>
@@ -318,29 +335,32 @@ fetch("../../backend/announcement_get.php")
             <td>${item.date}</td>
             <td>${item.time}</td>
             <td>
-                <button class="btn btn-info btn-sm text-white"
-                    onclick='openViewModal(${JSON.stringify(item)})'>
-                    <i class="bi bi-eye"></i>
-                </button>
+                <div class="d-flex gap-1">
+                    <button class="btn btn-info btn-sm text-white"
+                        onclick='openViewModal(${JSON.stringify(item)})'>
+                        <i class="bi bi-eye"></i>
+                    </button>
 
-                <button class="btn btn-primary btn-sm me-1"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editModal"
-                    data-id="${item._id}"
-                    data-title="${item.title.replace(/"/g,'&quot;')}"
-                    data-details="${item.details.replace(/"/g,'&quot;')}"
-                    data-location="${item.location.replace(/"/g,'&quot;')}"
-                    data-date="${item.date}"
-                    data-time="${item.time}"
-                    data-image="${item.image}">
-                    <i class="bi bi-pencil-square"></i>
-                </button>
+                    <button class="btn btn-primary btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editModal"
+                        data-id="${item._id}"
+                        data-title="${item.title.replace(/"/g,'&quot;')}"
+                        data-details="${item.details.replace(/"/g,'&quot;')}"
+                        data-location="${item.location.replace(/"/g,'&quot;')}"
+                        data-date="${item.date}"
+                        data-time="${item.time}"
+                        data-image="${item.image}">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
 
-                <button class="btn btn-warning btn-sm me-1"
-                    onclick='openArchiveModal("${item._id}")'>
-                    <i class="bi bi-archive"></i>
-                </button>
-            </td>
+                    <button class="btn btn-warning btn-sm"
+                        onclick='openArchiveModal("${item._id}")'>
+                        <i class="bi bi-archive"></i>
+                    </button>
+                </div>
+                </td>
+
         </tr>`;
     });
     document.getElementById("announcementTable").innerHTML = table;
