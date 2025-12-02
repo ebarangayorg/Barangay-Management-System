@@ -111,6 +111,44 @@ body {
     font-size: 40px;
 }
 
+/* Official Card Container */
+.official-card {
+    width: 220px;            /* reduced width */
+    margin: 0;   
+    border-radius: 10px;
+    background: #ffffff;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Vertical image frame */
+.official-img-box {
+    width: 180px;          /* vertical width */
+    height: 240px;         /* vertical height */
+    border-radius: 20px;   /* vertical round corners */
+    overflow: hidden;
+    background: #d9e5d9;   
+    border: 3px solid black;
+}
+
+/* Image inside (auto crop horizontal to vertical) */
+.official-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* keeps shape, crops evenly */
+    object-position: center;
+}
+
+.official-page-title {
+    min-height: 30px;
+    margin-top: 20px;
+    font-size: 20px;
+}
+
 /* Mobile View */
 @media (max-width: 768px) {
     .header-banner {

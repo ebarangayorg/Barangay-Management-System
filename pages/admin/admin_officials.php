@@ -73,7 +73,7 @@
             </div>
         </div>
 
-        <table class="table">
+        <table class="table officials-table">
             <thead>
                 <tr>
                     <th style="width: 320px;">Image</th>

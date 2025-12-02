@@ -24,7 +24,7 @@
 <section class="py-5 bg-light">
     <div class="container">
         <h3 class="fw-bold mb-4">Elected <span class="text-success">Officials</span></h3>
-        <div class="row g-4" id="officialsContainer">
+        <div class="row g-2" id="officialsContainer">
         </div>
     </div>
 </section>
@@ -45,18 +45,19 @@ fetch('backend/officials_get.php')
     }
 
     data.forEach(official => {
-        container.innerHTML += `
-        <div class="col-md-4">
-            <div class="card announcement-card p-3 text-center">
-                <img src="uploads/officials/${official.image}" style="width:100%; height:auto; border-radius:5px;">
-                <div>
-                    <h6 class="mt-2 fw-bold">${official.name}</h6>
-                    <p class="mt-2">${official.position}</p>
-                </div>
+    container.innerHTML += `
+    <div class="col-md-3 d-flex justify-content-center">
+        <div class="official-card">
+            <div class="official-img-box">
+                <img src="uploads/officials/${official.image}" alt="">
             </div>
+            <h6 class="fw-bold official-page-title mt-3">${official.name}</h6>
+            <p>${official.position}</p>
         </div>
-        `;
-    });
+    </div>
+    `;
+});
+
 });
 </script>
 </body>

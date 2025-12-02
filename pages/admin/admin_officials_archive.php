@@ -72,7 +72,7 @@ $officials = $officialsCollection->find($filter);
                 <button class="search-btn"><i class="bi bi-search"></i></button>
             </form>
 
-        <table class="table table-striped">
+        <table class="table officials-table">
             <thead>
                 <tr>
                     <th>Image</th>

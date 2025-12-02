@@ -192,6 +192,67 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
     margin-right: 20px;
 }
 
+.officials-table {
+    width: 80%;            
+    margin: 0 auto;   
+}
+
+/* Reduce spacing inside cells */
+.officials-table th,
+.officials-table td {
+    padding: 6px 10px !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+}
+
+/* SMALLER column widths */
+.officials-table th:nth-child(1),
+.officials-table td:nth-child(1) {
+    width: 140px !important;
+}
+
+.officials-table th:nth-child(2),
+.officials-table td:nth-child(2) {
+    width: 160px !important;   /* name column smaller */
+}
+
+.officials-table th:nth-child(3),
+.officials-table td:nth-child(3) {
+    width: 150px !important;   /* position column smaller */
+}
+
+.officials-table th:nth-child(4),
+.officials-table td:nth-child(4) {
+    width: 120px !important;
+}
+
+/* Image styling */
+.officials-table img {
+    display: block;
+    margin: 0 auto;
+    width: 110px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+/* NAME STYLE */
+.officials-table td:nth-child(2) {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* POSITION STYLE */
+.officials-table td:nth-child(3) {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+
 /* ---------- CALENDAR ---------- */
 .calendar-container {
   background: white;
