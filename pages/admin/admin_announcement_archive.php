@@ -103,12 +103,53 @@ $announcements = $announcementCollection->find($filter);
                             <i class="bi bi-eye"></i>
                         </button>
 
-                        <!-- RESTORE -->
-                        <button class="btn btn-sm btn-success me-1"
-                            onclick='openRestoreModal("<?= $item->_id ?>")'>
-                            <i class="bi bi-arrow-counterclockwise"></i>
-                        </button>
+<?php foreach ($announcements as $item): ?>
+    <tr>
+        <td>
+            <?php if (!empty($item->image)): ?>
+                <img src="../../uploads/announcements/<?= $item->image ?>" style="width:150px;height:auto;">
+            <?php endif; ?>
+        </td>
+        <td><?= htmlspecialchars($item->title) ?></td>
+        <td>
+            <?php 
+                $maxLength = 30;
+                $details = $item->details ?? '';
+                echo strlen($details) > $maxLength 
+                    ? htmlspecialchars(substr($details, 0, $maxLength)) . '...' 
+                    : htmlspecialchars($details);
+            ?>
+        </td>
+        <td>
+            <?php
+                $maxLengthLoc = 20; // Max chars for location
+                $location = $item->location ?? '-';
+                echo strlen($location) > $maxLengthLoc 
+                    ? htmlspecialchars(substr($location, 0, $maxLengthLoc)) . '...' 
+                    : htmlspecialchars($location);
+            ?>
+        </td>
+        <td><?= htmlspecialchars($item->date) ?></td>
+        <td><?= htmlspecialchars($item->time) ?></td>
+        <td>
+            <button class="btn btn-sm btn-info me-1 text-white"
+                onclick='openViewModal(<?= json_encode($item) ?>)'>
+                <i class="bi bi-eye"></i>
+            </button>
 
+            <button class="btn btn-sm btn-success me-1"
+                onclick='openRestoreModal("<?= $item->_id ?>")'>
+                <i class="bi bi-arrow-counterclockwise"></i>
+            </button>
+
+            <button class="btn btn-sm btn-danger"
+                onclick='openDeleteModal("<?= $item->_id ?>")'>
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    </tr>
+<?php endforeach; ?>
+</tbody>
                         <!-- DELETE -->
                         <button class="btn btn-sm btn-danger"
                             onclick='openDeleteModal("<?= $item->_id ?>")'>

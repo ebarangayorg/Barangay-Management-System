@@ -1,9 +1,5 @@
 <?php
-require_once "backend/config.php"; // adjust path if needed
-
-// Fetch active announcements
-$announcementFilter = ['status' => 'active'];
-// Fetch active announcements sorted by newest date & time
+require_once "backend/config.php"; 
 $announcementFilter = ['status' => 'active'];
 
 $announcements = $announcementCollection->find(
@@ -15,7 +11,6 @@ $announcements = $announcementCollection->find(
         ]
     ]
 );
-
 ?>
 
 <!DOCTYPE html>
@@ -97,7 +92,6 @@ $announcements = $announcementCollection->find(
         </div>
     </div>
 </section>
-
 
 <!-- Footer -->
 <?php include('includes/footer.php'); ?>

@@ -244,7 +244,7 @@ function toggleSidebar() {
     document.querySelector('.sidebar').classList.toggle('active');
 }
 
-function truncateText(text, maxLength = 50) {
+function truncateText(text, maxLength = 40) {
     if (!text) return "";
     return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
 }
@@ -304,7 +304,6 @@ document.getElementById("edit-photo").addEventListener("change", function(event)
     }
 });
 
-// ======================= LOAD ANNOUNCEMENTS =======================
 fetch("../../backend/announcement_get.php")
 .then(res => res.json())
 .then(data => {
