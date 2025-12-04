@@ -779,6 +779,7 @@ select {
     overflow-y: auto !important;
 }
 
+<<<<<<< Updated upstream
 .timeline-event {
     padding: 8px 12px;
     border-left: 3px solid #4CAF50;
@@ -798,3 +799,18 @@ select {
     color: #4CAF50;
 }
 
+=======
+/* --- LAYOUT FIX (REQUIRED FOR NO SHIFTING) --- */
+.main-content-wrapper { 
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column; 
+    width: calc(100% - 260px); 
+    min-width: 0; 
+}
+
+/* Add or check these for status color styling */
+.status.pending { background: #f0ad4e; color: #fff; padding: 3px 6px; border-radius: 4px; }
+.status.readytopickup { background: #5cb85c; color: #fff; padding: 3px 6px; border-radius: 4px; }
+.status.decline { background: #d9534f; color: #fff; padding: 3px 6px; border-radius: 4px; }
+>>>>>>> Stashed changes
