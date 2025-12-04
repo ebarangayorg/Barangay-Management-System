@@ -26,7 +26,6 @@ session_start();
 
 <div class="container" style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom:50px; margin-top: 50px">
     
-    <!-- CARD 1 -->
     <div class="card-custom announcement-card" style="width:250px; text-align:center; padding:20px; background:#fff;">
         <img src="assets/img/clearance.png">
         <h5>Barangay Clearance</h5>
@@ -42,7 +41,6 @@ session_start();
         <?php endif; ?>
     </div>
 
-    <!-- CARD 2 -->
     <div class="card-custom announcement-card" style="width:250px; text-align:center; padding:20px; background:#fff;">
         <img src="assets/img/indigency.png">
         <h5>Certificate of Indigency</h5>
@@ -58,7 +56,6 @@ session_start();
         <?php endif; ?>
     </div>
 
-    <!-- CARD 3 -->
     <div class="card-custom announcement-card" style="width:250px; text-align:center; padding:20px; background:#fff;">
         <img src="assets/img/residency.png">
         <h5>Certificate of Residency</h5>
@@ -74,7 +71,6 @@ session_start();
         <?php endif; ?>
     </div>
 
-    <!-- CARD 4 -->
     <div class="card-custom announcement-card" style="width:250px; text-align:center; padding:20px; background:#fff;">
         <img src="assets/img/business.png">
         <h5>Barangay Business Clearance</h5>
@@ -100,7 +96,7 @@ session_start();
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
-      <form action="pages/resident/resident_rqs_service.php" method="POST">
+      <form id="requestForm">
         <div class="modal-body px-4">
 
           <p><strong>Full Name:</strong> <?= $_SESSION['fullname'] ?? 'Resident' ?></p>
@@ -137,9 +133,48 @@ document.querySelectorAll('.openRequestModal').forEach(btn => {
 
         document.getElementById('docType').value = docType;
         document.getElementById('docPreview').innerText = docType;
+        
+        // Reset purpose field when opening modal
+        document.getElementById('requestForm').elements['purpose'].value = '';
 
         let modal = new bootstrap.Modal(document.getElementById('requestModal'));
         modal.show();
+    });
+});
+
+// **UPDATED: Handle form submission with fetch API**
+document.getElementById('requestForm').addEventListener('submit', function(e){
+    e.preventDefault(); // Stop the default form submission
+
+    const purposeValue = this.purpose.value;
+    const docTypeValue = document.getElementById('docType').value;
+    
+    if (!purposeValue.trim()) {
+        alert('Please enter a purpose for your request.');
+        return;
+    }
+
+    const formData = {
+        document_type: docTypeValue,
+        purpose: purposeValue
+    };
+
+    fetch("backend/issuance_request.php", { // Correct path to your backend script
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(formData)
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+        if(data.status === "success"){
+            // Close the modal upon success
+            bootstrap.Modal.getInstance(document.getElementById('requestModal')).hide();
+        }
+    })
+    .catch(error => {
+        console.error('Error submitting request:', error);
+        alert('An error occurred during submission.');
     });
 });
 </script>
