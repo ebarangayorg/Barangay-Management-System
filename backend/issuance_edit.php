@@ -1,62 +1,41 @@
 <?php
-// Start session to access user email for security checks
-session_start(); 
-require 'config.php'; // Includes your MongoDB connection logic
+require_once 'auth_resident.php';
+require_once 'config.php';
+
 header('Content-Type: application/json');
 
-// --- SECURITY CHECK 1: Must be logged in ---
-if (!isset($_SESSION['email'])) {
-    echo json_encode(['status' => 'error', 'message' => 'Authentication required. Please log in.']);
-    exit;
-}
-
 $data = json_decode(file_get_contents('php://input'), true);
+$id = $data['id'] ?? '';
+$reason = isset($data['reason']) ? trim($data['reason']) : null;
+$purpose = isset($data['purpose']) ? trim($data['purpose']) : null;
 
-// Check for required data: ID and the new purpose
-if (!$data || empty($data['id']) || !isset($data['purpose'])) {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid or missing request data (ID or Purpose).']);
+if (!$id) {
+    echo json_encode(['status'=>'error','message'=>'Missing required fields']);
     exit;
 }
 
-$id = $data['id'];
-$newPurpose = $data['purpose'];
-$residentEmail = $_SESSION['email']; // The email of the currently logged-in user
+// build $set array
+$set = [];
+if ($reason !== null) $set['reason'] = $reason;
+if ($purpose !== null) $set['purpose'] = $purpose;
+
+if (empty($set)) {
+    echo json_encode(['status'=>'error','message'=>'Nothing to update']);
+    exit;
+}
 
 try {
-    $collection = $client->bms_db->issuances;
-
-    // --- SECURE AND CONDITIONAL UPDATE CRITERIA ---
-    $result = $collection->updateOne(
-        [
-            // 1. Target the specific request ID
-            '_id' => new MongoDB\BSON\ObjectId($id),
-            // 2. Only allow modification if the request belongs to the logged-in user
-            'resident_email' => $residentEmail,
-            // 3. Only allow modification if the request status is 'Pending'
-            'status' => 'Pending' 
-        ],
-        [
-            // Set the new purpose field
-            '$set' => [
-                'purpose' => $newPurpose,
-                'last_updated_by_resident' => date("Y-m-d H:i:s") 
-            ]
-        ]
+    $updateResult = $issuanceCollection->updateOne(
+        ['_id' => new MongoDB\BSON\ObjectId($id)],
+        ['$set' => $set]
     );
 
-    if ($result->getModifiedCount() > 0) {
-        echo json_encode(['status' => 'success', 'message' => 'Request purpose updated successfully.']);
-    } elseif ($result->getMatchedCount() > 0) {
-        echo json_encode(['status' => 'info', 'message' => 'Request not modified (no changes were made).']);
+    if ($updateResult->getModifiedCount() > 0) {
+        echo json_encode(['status'=>'success','message'=>'Request updated successfully']);
     } else {
-        // No document matched the criteria (ID/Email/Pending status mismatch)
-        echo json_encode(['status' => 'error', 'message' => 'Update failed. The request may be processed or does not belong to your account.']);
+        // even if no modified (same values), reply success to keep UI simple
+        echo json_encode(['status'=>'success','message'=>'No changes were made or update saved']);
     }
-
-} catch (MongoDB\Driver\Exception\Exception $e) {
-    echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
 } catch (Exception $e) {
-    echo json_encode(['status' => 'error', 'message' => 'An unexpected error occurred: ' . $e->getMessage()]);
+    echo json_encode(['status'=>'error','message'=>'Update failed: ' . $e->getMessage()]);
 }
-
-?>

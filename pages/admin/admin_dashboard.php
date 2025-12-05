@@ -32,52 +32,6 @@ try {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../css/dashboard.css" />
     <link rel="stylesheet" href="../../css/toast.css">
-<<<<<<< Updated upstream
-=======
-
-    <style>
-        /* Timeline styling */
-        .timeline-event {
-            padding: 12px;
-            border-left: 4px solid #28a745; /* same green as scroll bar */
-            border-radius: 4px;
-            margin-bottom: 12px;
-            background: #f5f5f5;
-        }
-
-        .timeline-event h4 {
-            margin: 0;
-            font-size: 15px; /* slightly smaller */
-            font-weight: bold;
-        }
-
-        .timeline-event .location {
-            font-size: 13px;
-            font-weight: bold;
-            color: #333;
-            display: flex;
-            align-items: center;
-            margin-top: 4px;
-        }
-
-        .timeline-event .location i {
-            margin-right: 6px;
-        }
-
-        .timeline-event .datetime {
-            font-size: 12px;
-            color: #555;
-            display: flex;
-            align-items: center;
-            margin-top: 2px;
-        }
-
-        .timeline-event .datetime i {
-            margin-right: 6px;
-        }
-    </style>
-
->>>>>>> Stashed changes
 </head>
 
 <body>
@@ -98,7 +52,6 @@ try {
         <a href="admin_officials.php"><i class="bi bi-people"></i> Officials</a>
         <a href="admin_issuance.php"><i class="bi bi-bookmark"></i> Issuance</a>
 
-<<<<<<< Updated upstream
         <div class="dropdown-container">
             <button class="dropdown-btn">
                 <i class="bi bi-file-earmark-text"></i> Records
@@ -110,22 +63,6 @@ try {
                 <a href="admin_rec_blotter.php">Blotter</a>
             </div>
         </div>
-=======
-      <div class="dropdown-container">
-          <button class="dropdown-btn">
-              <i class="bi bi-file-earmark-text"></i> Records
-              <i class="bi bi-caret-down-fill dropdown-arrow"></i>
-          </button>
-          <div class="dropdown-content">
-              <a href="admin_rec_residents.php">Residents</a>
-              <a href="admin_rec_complaints.php">Complaints</a>
-              <a href="admin_rec_blotter.php">Blotter</a>
-          </div>
-      </div>
-
-      <a href="../../backend/logout.php"><i class="bi bi-box-arrow-left"></i> Logout</a>
-  </div>
->>>>>>> Stashed changes
 
         <a href="../../backend/logout.php"><i class="bi bi-box-arrow-left"></i> Logout</a>
     </div>
@@ -147,7 +84,6 @@ try {
     <div class="content">
 
         <section class="top-info">
-<<<<<<< Updated upstream
             <section class="left-column">
                 <div class="stats-boxes">
                     <article class="stats-box">
@@ -208,69 +144,6 @@ try {
         </section>
     </div>
 </div>
-=======
-        <section class="left-column" aria-label="Statistics and issuances summary">
-          
-          <div class="stats-boxes" aria-label="Summary statistics">
-            <article class="stats-box" tabindex="0">
-              <i class="bi bi-people-fill"></i>
-              <div class="details">
-                <div class="info">28,974</div>
-                <div class="label">Total Population</div>
-              </div>
-            </article>
-
-            <article class="stats-box" tabindex="0">
-              <i class="bi bi-house-door-fill"></i>
-              <div class="details">
-                <div class="info">6,798</div>
-                <div class="label">Households</div>
-              </div>
-            </article>
-          </div>
-
-          <div class="red-banner">Total Issuances Pending Release: 477</div>
-
-          <div class="issuances-grid">
-            <div class="issuance-tile"><i class="bi bi-file-earmark-text"></i><div class="label">Barangay Clearance</div><div class="count">112</div></div>
-            <div class="issuance-tile"><i class="bi bi-award"></i><div class="label">Certificate of Residency</div><div class="count">168</div></div>
-            <div class="issuance-tile"><i class="bi bi-cash-coin"></i><div class="label">Certificate of Indigency</div><div class="count">89</div></div>
-            <div class="issuance-tile"><i class="bi bi-briefcase"></i><div class="label">BRGY Business Permit</div><div class="count">67</div></div>
-            <div class="issuance-tile"><i class="bi bi-wrench"></i><div class="label">BRGY Building Permit</div><div class="count">22</div></div>
-            <div class="issuance-tile"><i class="bi bi-envelope"></i><div class="label">Solicitations</div><div class="count">6</div></div>
-            <div class="issuance-tile"><i class="bi bi-hourglass-split"></i><div class="label">Lupon</div><div class="count">13</div></div>
-            <div class="issuance-tile"><i class="bi bi-plus-lg"></i><div class="label">Others</div></div>
-          </div>
-        </section>
-
-        <section class="right-column">
-
-          <section class="calendar-container">
-              <h3 class="calendar-header">BARANGAY <span class="green">CALENDAR</span></h3>
-              <div class="calendar-header">
-                  <button id="prev-month">&lt;</button>
-                  <h2 id="month-year"></h2>
-                  <button id="next-month">&gt;</button>
-              </div>
-              <div class="calendar-grid" id="calendar-grid"></div>
-          </section>
-
-          <!-- Dynamic timeline -->
-          <article class="timeline" id="timeline-events">
-              <p>Loading announcements...</p>
-          </article>
-
-          <nav class="action-buttons">
-            <button><i class="bi bi-plus-lg"></i> ADD EVENT</button>
-            <button><i class="bi bi-pencil-square"></i> EDIT EVENT</button>
-            <button><i class="bi bi-trash"></i> DELETE EVENT</button>
-          </nav>
-
-        </section>
-      </section>
-    </main>
-  </div>
->>>>>>> Stashed changes
 
 <script src="../../assets/js/calendar.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -279,7 +152,15 @@ try {
 function toggleSidebar() {
     document.querySelector('.sidebar').classList.toggle('active');
 }
-<<<<<<< Updated upstream
+
+function showToast(message, type='success', timeout=2500) {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast show ${type}`;
+    toast.innerHTML = `<div class="toast-body">${message}</div>`;
+    container.appendChild(toast);
+    setTimeout(()=>{ toast.remove() }, timeout);
+}
 
 fetch("../../backend/announcement_get_dashboard.php")
     .then(res => res.json())
@@ -300,61 +181,24 @@ fetch("../../backend/announcement_get_dashboard.php")
             timelineHTML || "<p>No upcoming announcements.</p>";
     });
 
-=======
-document.querySelectorAll('.dropdown-btn').forEach(btn => {
-    btn.addEventListener('click', () => btn.parentElement.classList.toggle('active'));
-});
->>>>>>> Stashed changes
 </script>
-
-<script>
-// Load MongoDB Announcements
-document.addEventListener("DOMContentLoaded", loadTimeline);
-
-function loadTimeline() {
-    fetch("../../backend/fetch_announcements.php")
-        .then(res => res.json())
-        .then(data => {
-            const container = document.getElementById("timeline-events");
-            container.innerHTML = "";
-
-            if (data.status !== "success") {
-                container.innerHTML = "<p style='color:red;'>Failed to load announcements.</p>";
-                return;
-            }
-
-            if (data.data.length === 0) {
-                container.innerHTML = "<p>No announcements available.</p>";
-                return;
-            }
-
-            data.data.forEach(item => {
-                container.innerHTML += `
-                    <div class="timeline-event">
-                        <h4>${item.title}</h4>
-                        <div class="location"><i class="bi bi-geo-alt-fill"></i> ${item.location}</div>
-                        <div class="datetime"><i class="bi bi-calendar-event"></i> ${item.time} | ${item.date}</div>
-                    </div>
-                `;
-            });
-        })
-        .catch(() => {
-            document.getElementById("timeline-events").innerHTML =
-                "<p style='color:red;'>Network error loading announcements.</p>";
-        });
-}
-</script>
-
 <div id="toast" class="toast"></div>
+
 <script>
 function showToast(message, type = "error") {
     const t = document.getElementById("toast");
+
+    // Reset classes (VERY IMPORTANT)
     t.className = "toast";
+
     t.textContent = message;
-    t.classList.add(type, "show");
-    setTimeout(() => t.classList.remove("show"), 3000);
+    t.classList.add(type);
+    t.classList.add("show");
+
+    setTimeout(() => {
+        t.classList.remove("show");
+    }, 3000);
 }
-<<<<<<< Updated upstream
 
 document.querySelectorAll('.dropdown-btn').forEach(btn => {
         btn.addEventListener('click', function(){
@@ -362,15 +206,13 @@ document.querySelectorAll('.dropdown-btn').forEach(btn => {
         });
     });
 
-=======
->>>>>>> Stashed changes
 </script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <?php if (isset($_SESSION['toast'])): ?>
 <script>
     showToast("<?= $_SESSION['toast']['msg'] ?>", "<?= $_SESSION['toast']['type'] ?>");
 </script>
-<?php unset($_SESSION['toast']); endif; ?>
+<?php unset($_SESSION['toast'], $_SESSION['toast_type']); endif; ?>
 
 </body>
 </html>

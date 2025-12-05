@@ -50,6 +50,7 @@ $announcements = iterator_to_array($announcementCollection->find($filter));
             <div class="dropdown-content">
                 <a href="admin_announcement_archive.php" class="active"><i class="bi bi-megaphone"></i> Announcement</a>
                 <a href="admin_officials_archive.php"><i class="bi bi-people"></i> Officials</a>
+                <a href="admin_issuance_archive.php"><i class="bi bi-file-earmark-text"></i> Issuance</a>
                 <a href="admin_rec_complaints_archive.php"><i class="bi bi-file-earmark-text"></i> Complaints</a>
                 <a href="admin_rec_blotter_archive.php"><i class="bi bi-file-earmark-text"></i> Blotter</a>
             </div>
@@ -132,9 +133,10 @@ $announcements = iterator_to_array($announcementCollection->find($filter));
                             </button>
                         </td>
                     </tr>
+                    </tbody>
                     <?php endforeach; ?>
                 <?php endif; ?>
-            </tbody>
+            
         </table>
     </div>
 </div>

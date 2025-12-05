@@ -1,11 +1,11 @@
 <?php
-require_once "../../backend/config.php";
-require_once "../../backend/fpdf186/fpdf.php";
+require_once "../../../backend/config.php";
+require_once "../../../backend/fpdf186/fpdf.php";
 
 class PDF extends FPDF {
     function Header() {
-        $this->Image('../../assets/img/cdologo.png', 10, 10, 25);
-        $this->Image('../../assets/img/barangaygusalogo.png', 175, 10, 25);
+        $this->Image('../../../assets/img/cdologo.png', 10, 10, 25);
+        $this->Image('../../../assets/img/barangaygusalogo.png', 175, 10, 25);
 
         $this->SetY(12);
         $this->SetFont('Times','',10);

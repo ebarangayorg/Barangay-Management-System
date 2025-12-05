@@ -1,32 +1,17 @@
 <?php
-// PATH FIXED: db_connect is in the same folder.
-require_once 'db_connect.php'; 
+require_once "config.php";
+require_once "auth_admin.php";
 
-header('Content-Type: application/json');
-$input = json_decode(file_get_contents('php://input'), true);
-
-if (!isset($input['id']) || !is_numeric($input['id'])) {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request ID for deletion.']);
-    exit;
+if (!isset($_POST["issuance_id"]) || empty($_POST["issuance_id"])) {
+    die("Error: Missing request ID.");
 }
 
-$id = $input['id'];
+$id = $_POST["issuance_id"];
 
-$sql = "DELETE FROM issuance_requests WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id);
+$issuanceCollection->deleteOne([
+    "_id" => new MongoDB\BSON\ObjectId($id)
+]);
 
-if ($stmt->execute()) {
-    if ($stmt->affected_rows > 0) {
-        echo json_encode(['status' => 'success', 'message' => 'Issuance request deleted successfully!']);
-    } else {
-        echo json_encode(['status' => 'info', 'message' => 'No request found with that ID to delete.']);
-    }
-} else {
-    echo json_encode(['status' => 'error', 'message' => 'Database delete error: ' . $conn->error]);
-}
-
-$stmt->close();
-$conn->close();
-exit;
+header("Location: ../pages/admin/admin_issuance_archive.php");
+exit();
 ?>

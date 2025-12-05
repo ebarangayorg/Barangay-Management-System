@@ -354,7 +354,7 @@ fetch("../../backend/announcement_get.php")
                         <i class="bi bi-pencil-square"></i>
                     </button>
 
-                    <button class="btn btn-warning btn-sm"
+                    <button class="btn btn-sm btn-secondary archive-btn"
                         onclick='openArchiveModal("${item._id}")'>
                         <i class="bi bi-archive"></i>
                     </button>

@@ -137,7 +137,7 @@ $incidents = $incidentsCollection->find($filter);
                     <td><span class="status <?= strtolower($incident->status) ?>"><?= ucfirst($incident->status) ?></span></td>
                     <td>
                         <!-- VIEW -->
-                        <a href="admin_rec_blotter_print.php?id=<?= $incident->_id ?>" 
+                        <a href="pdf_files/pdf_blotter.php?id=<?= $incident->_id ?>" 
                            target="_blank"
                            class="btn btn-sm btn-info text-white me-1">
                            <i class="bi bi-eye"></i>
@@ -149,7 +149,7 @@ $incidents = $incidentsCollection->find($filter);
                         </button>
 
                         <!-- ARCHIVE -->
-                        <button class="btn btn-sm btn-warning text-white archive-btn" data-id="<?= (string)$incident->_id ?>">
+                        <button class="btn btn-sm btn-secondary archive-btn" data-id="<?= (string)$incident->_id ?>">
                             <i class="bi bi-archive"></i>
                         </button>
                     </td>

@@ -114,7 +114,7 @@ $filter = ["status" => ['$ne' => "archived"]];
                         <i class="bi bi-eye"></i>
                     </button>
 
-                    <button class="btn btn-sm btn-warning me-1 text-white"
+                    <button class="btn btn-sm btn-secondary"
                             onclick="openArchiveModal('<?= $c->_id ?>')">
                         <i class="bi bi-archive"></i>
                     </button>

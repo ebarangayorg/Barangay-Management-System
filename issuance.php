@@ -1,6 +1,25 @@
-<?php 
+<?php
 session_start();
+require_once 'backend/config.php'; // include MongoDB or MySQL connection
+
+$email = $_SESSION['email'] ?? '';
+
+$fullname = 'Resident';
+
+if ($email) {
+    $resident = $residentsCollection->findOne(['email' => $email]); // MongoDB example
+    if ($resident) {
+        $fullname = trim(
+            ($resident['first_name'] ?? '') . ' ' .
+            ($resident['middle_name'] ?? '') . ' ' .
+            ($resident['last_name'] ?? '') . ' ' .
+            ($resident['suffix'] ?? '')
+        );
+    }
+}
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +29,7 @@ session_start();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="assets/img/BMS.png">
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/toast.css" />
 </head>
 <body>
 
@@ -89,8 +109,7 @@ session_start();
 
 <div class="modal fade" id="requestModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-md">
-    <div class="modal-content" style="border-radius: 12px; overflow:hidden;">
-
+    <div class="modal-content rounded-3">
       <div class="modal-header bg-light">
         <h5 class="modal-title fw-bold">Request Details</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -98,84 +117,190 @@ session_start();
 
       <form id="requestForm">
         <div class="modal-body px-4">
+          <p><strong>Full Name:</strong> <?= htmlspecialchars($fullname) ?></p>
 
-          <p><strong>Full Name:</strong> <?= $_SESSION['fullname'] ?? 'Resident' ?></p>
-          <p><strong>Email:</strong> <?= $_SESSION['email'] ?? 'N/A' ?></p>
-          <p><strong>Document Type:</strong> <span id="docPreview"></span></p>
-
-          <label class="form-label mt-3 fw-semibold">Purpose of Request:</label>
-          <textarea class="form-control" name="purpose" rows="3" required
-                    placeholder="Enter your purpose here..."></textarea>
-
+          <p><strong>Document Type:</strong> <span id="docTypeDisplay"></span></p>
           <input type="hidden" id="docType" name="document_type">
 
+          <!-- Indigency extras -->
+          <div id="indigencyExtras" class="mt-3 d-none">
+            <label class="form-label fw-semibold">Purpose (Indigency Only)</label>
+            <input type="text" id="indigencyPurpose" class="form-control" placeholder="E.g. hospital, scholarship, etc.">
+
+            <label class="form-label mt-3 fw-semibold">Certificate For</label>
+            <select class="form-select" id="certificateFor">
+                <option value="">-- Select --</option>
+                <option value="Self">Self</option>
+                <option value="Son">Son</option>
+                <option value="Daughter">Daughter</option>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+                <option value="Spouse">Spouse</option>
+                <option value="Relative">Relative</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <input type="text" id="certificateOtherRelationship" class="form-control mt-2 d-none" placeholder="If 'Other', enter relationship">
+            <input type="text" id="certificateForFullName" class="form-control mt-2 d-none" placeholder="Full name (include middle name)">
+          </div>
+
+          <!-- Business clearance extras -->
+          <div id="businessExtras" class="mt-3 d-none">
+            <label class="form-label fw-semibold">Business Name</label>
+            <input type="text" id="businessName" class="form-control" placeholder="Enter business name">
+            <label class="form-label mt-2 fw-semibold">Business Location</label>
+            <input type="text" id="businessLocation" class="form-control" placeholder="Enter business location">
+          </div>
+
+          <label class="form-label mt-3 fw-semibold">Reason</label>
+          <textarea class="form-control" id="reasonField" name="reason" rows="3" placeholder="Enter reason..." required></textarea>
         </div>
 
         <div class="modal-footer bg-light">
-          <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-success w-100 mt-2">Proceed</button>
+          <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Close</button>
         </div>
-
       </form>
-
     </div>
   </div>
 </div>
+
+<div id="toast"></div>
 
 <?php include('includes/footer.php'); ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+const docTypeSelect = document.getElementById('docType');
+const docTypeDisplay = document.getElementById('docTypeDisplay');
+const indigencyExtras = document.getElementById('indigencyExtras');
+const businessExtras = document.getElementById('businessExtras');
+const certForSelect = document.getElementById('certificateFor');
+const certOtherRelationship = document.getElementById('certificateOtherRelationship');
+const certForFullName = document.getElementById('certificateForFullName');
+const requestForm = document.getElementById('requestForm');
+const toastEl = document.getElementById('toast');
+
+function showToast(message, type = "success") {
+    toastEl.className = "toast show " + type;
+    toastEl.innerHTML = message;
+    setTimeout(() => {
+        toastEl.className = toastEl.className.replace("show", "");
+    }, 2500);
+}
+
+// Open modal buttons
 document.querySelectorAll('.openRequestModal').forEach(btn => {
     btn.addEventListener('click', function () {
         const docType = this.dataset.doc;
 
-        document.getElementById('docType').value = docType;
-        document.getElementById('docPreview').innerText = docType;
-        
-        // Reset purpose field when opening modal
-        document.getElementById('requestForm').elements['purpose'].value = '';
+        // Set hidden input and display
+        docTypeSelect.value = docType;
+        docTypeDisplay.innerText = docType;
 
-        let modal = new bootstrap.Modal(document.getElementById('requestModal'));
+        // Reset dynamic fields
+        indigencyExtras.classList.add('d-none');
+        businessExtras.classList.add('d-none');
+        certOtherRelationship.classList.add('d-none');
+        certForFullName.classList.add('d-none');
+        requestForm.reset();
+
+        // Show relevant extra fields
+        if(docType === 'Certificate of Indigency') {
+            indigencyExtras.classList.remove('d-none');
+            document.getElementById('indigencyPurpose').required = true;
+        } else if(docType === 'Barangay Business Clearance') {
+            businessExtras.classList.remove('d-none');
+        }
+
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('requestModal'));
         modal.show();
     });
 });
 
-// **UPDATED: Handle form submission with fetch API**
-document.getElementById('requestForm').addEventListener('submit', function(e){
-    e.preventDefault(); // Stop the default form submission
+// Show/hide full name / other relationship for indigency
+certForSelect.addEventListener('change', e => {
+    const val = e.target.value;
+    certOtherRelationship.classList.add('d-none');
+    certForFullName.classList.add('d-none');
 
-    const purposeValue = this.purpose.value;
-    const docTypeValue = document.getElementById('docType').value;
-    
-    if (!purposeValue.trim()) {
-        alert('Please enter a purpose for your request.');
+    if(val && val !== 'Self') {
+        certForFullName.classList.remove('d-none');
+        if(val === 'Other') {
+            certOtherRelationship.classList.remove('d-none');
+        }
+    }
+});
+
+// Form submission
+requestForm.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    <?php if(!isset($_SESSION['email'])): ?>
+        showToast("Please login to request documents.", "danger");
         return;
+    <?php endif; ?>
+
+    const document_type = docTypeSelect.value;
+    const reason = document.getElementById('reasonField').value.trim();
+    const purpose = document.getElementById('indigencyPurpose').value.trim();
+    const certificate_for = certForSelect.value;
+    const certificateOtherRel = certOtherRelationship.value.trim();
+    const certificateForFull = certForFullName.value.trim();
+    const businessName = document.getElementById('businessName').value.trim();
+    const businessLocation = document.getElementById('businessLocation').value.trim();
+
+    if(!document_type || !reason) {
+        return showToast("Please complete required fields.", "danger");
     }
 
-    const formData = {
-        document_type: docTypeValue,
-        purpose: purposeValue
-    };
+    const payload = { document_type, reason };
 
-    fetch("backend/issuance_request.php", { // Correct path to your backend script
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(formData)
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.message);
-        if(data.status === "success"){
-            // Close the modal upon success
+    if(document_type === 'Certificate of Indigency'){
+        if(!certificate_for) return showToast("Please select who the certificate is for.", "danger");
+        if(certificate_for !== 'Self' && !certificateForFull) return showToast("Please enter full name.", "danger");
+        if(certificate_for === 'Other' && !certificateOtherRel) return showToast("Please enter relationship.", "danger");
+        if(!purpose) return showToast("Please enter purpose.", "danger");
+
+        payload.certificate_for = certificate_for;
+        payload.certificate_other_relationship = certificate_for==='Other' ? certificateOtherRel : '';
+        payload.certificate_for_fullname = certificate_for==='Self' ? '' : certificateForFull;
+        payload.purpose = purpose;
+    }
+
+    if(document_type === 'Barangay Business Clearance'){
+        if(!businessName || !businessLocation) return showToast("Please complete business info.", "danger");
+        payload.business_name = businessName;
+        payload.business_location = businessLocation;
+    }
+
+    try {
+        const res = await fetch("backend/issuance_request.php", {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        showToast(data.message, data.status==='success'?'success':'danger');
+
+        if(data.status === 'success'){
             bootstrap.Modal.getInstance(document.getElementById('requestModal')).hide();
+            requestForm.reset();
+            indigencyExtras.classList.add('d-none');
+            businessExtras.classList.add('d-none');
+
+            // Redirect after short delay
+            setTimeout(() => {
+                window.location.href = "pages/resident/resident_rqs_service.php";
+            }, 1200);
         }
-    })
-    .catch(error => {
-        console.error('Error submitting request:', error);
-        alert('An error occurred during submission.');
-    });
+    } catch(err) {
+        console.error(err);
+        showToast("Error submitting request.", "danger");
+    }
 });
 </script>
 

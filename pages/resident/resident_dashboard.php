@@ -30,13 +30,6 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../css/dashboard.css" />
-
-    <!-- Inline CSS for fixed profile card -->
-    <style>
-        .card {
-            height: 650px; /* constant height */
-        }
-    </style>
 </head>
 <body>
 
@@ -46,8 +39,8 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
             $profileImg = isset($resident['profile_image']) && $resident['profile_image'] !== ""
               ? "../../uploads/residents/" . $resident['profile_image']
               : "../../assets/img/profile.jpg";
-        ?>
-        <img src="<?= $profileImg ?>" alt="">
+            ?>
+            <img src="<?= $profileImg ?>" alt="">
 
         <div>
             <h3><?= $resident['first_name'] . " " . $resident['last_name'] ?></h3>
@@ -88,14 +81,9 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
                     $profileImg = isset($resident['profile_image']) && $resident['profile_image'] !== ""
                         ? "../../uploads/residents/" . $resident['profile_image']
                         : "../../assets/img/profile.jpg";
-<<<<<<< Updated upstream
                     ?>
                     <img src="<?= $profileImg ?>" alt="" style="margin-top:-25px;border-radius: 20px;">
 
-=======
-                ?>
-                <img src="<?= $profileImg ?>" alt="">
->>>>>>> Stashed changes
 
                 <strong style="margin-top:8px;"><?= $resident['first_name'] . " " . $resident['last_name'] ?></strong><br>
 
@@ -202,6 +190,7 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
 
           <hr>
 
+          <!-- Read-only preview in grid -->
           <h5>Other Information (Preview)</h5>
           <div class="row g-2">
             <div class="col-md-6"><b>Suffix:</b> <?= $resident->suffix ?></div>
@@ -227,9 +216,9 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
   </div>
 </div>
 
+
 <script src="../../assets/js/calendar.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
 function toggleSidebar() {
     document.querySelector('.sidebar').classList.toggle('active');
@@ -272,76 +261,33 @@ function openUpdateModal(data) {
 }
 
 document.querySelector('#updateModal form').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') e.preventDefault();
+    if (e.key === 'Enter') {
+        e.preventDefault(); // prevent Enter from submitting
+    }
 });
 
 const updateModal = document.getElementById('updateModal');
 updateModal.addEventListener('hidden.bs.modal', () => {
     const fileInput = updateModal.querySelector("input[name='profile_image']");
     const preview = document.getElementById("edit-preview");
-    fileInput.value = "";
-    preview.src = "";
+
+    fileInput.value = "";       // clear file input
+    preview.src = "";           // remove preview
     preview.style.display = "none";
 });
 
 document.querySelector("input[name='profile_image']").addEventListener("change", function(e) {
     const file = e.target.files[0];
     const preview = document.getElementById("edit-preview");
+
     if (file) {
         preview.src = URL.createObjectURL(file);
         preview.style.display = "block";
-    } else preview.style.display = "none";
+    } else {
+        preview.style.display = "none";
+    }
 });
 </script>
-<<<<<<< Updated upstream
-=======
-
-<script>
-async function loadEvents() {
-    const res = await fetch("../../backend/calendar_events.php");
-    const events = await res.json();
-
-    let eventsList = document.querySelector(".events");
-    if (!eventsList) return;
-
-    eventsList.innerHTML = "<h3>EVENTS</h3>";
-
-    function shortenText(text, limit = 25) {
-        let words = text.trim().split(/\s+/);
-        if (words.length <= limit) return text;
-        return words.slice(0, limit).join(" ") + " ";
-    }
-
-    events.forEach(event => {
-        const eventId = event._id ? event._id : "";
-        const shortened = shortenText(event.details, 25);
-
-        eventsList.innerHTML += `
-            <div class="event-item">
-                <strong>${event.title}</strong><br>
-
-                ${shortened}
-                ${
-                    event.details.trim().split(/\s+/).length > 25
-                        ? `<a href="../../announcement.php?id=${eventId}" style="color:blue; text-decoration:none;">...</a>`
-                        : ""
-                }
-                <br>
-
-                📍 ${event.location}<br>
-                📅 ${event.date} ⏰ ${event.time}<br>
-
-                ${event.image ? `<img src="${event.image}" style="max-width:100px;">` : ""}
-
-                <hr>
-            </div>
-        `;
-    });
-}
-
-window.onload = loadEvents;
-</script>
->>>>>>> Stashed changes
 
 </body>
 </html>

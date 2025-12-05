@@ -68,7 +68,7 @@
             </div>
 
             <div class="print-button">
-                <a href="admin_rec_residents_print.php" target="_blank" class="btn btn-primary">
+                <a href="pdf_files/pdf_residents.php" target="_blank" class="btn btn-primary">
                     <i class="bi bi-printer"></i> Print
                 </a>
             </div>  

@@ -1,65 +1,42 @@
 <?php
-// backend/issuance_get.php
-require 'config.php';
-header("Content-Type: application/json");
+require_once 'auth_resident.php';
+require_once 'config.php';
 
-try {
-    $issuancesCollection = $client->bms_db->issuances;
-    $usersCollection = $client->bms_db->users;
+header('Content-Type: application/json');
 
-    // Fetch all issuance requests
-    $requests = $issuancesCollection->find();
-    $requestsArray = iterator_to_array($requests);
-    
-    // --- Lookup Logic: Fetch resident names from the users collection ---
-    
-    $finalRequests = [];
-    $residentCache = []; 
-
-    foreach ($requestsArray as $req) {
-        $req = (array)$req; 
-        $email = $req['resident_email'] ?? null;
-        
-        // --- Determine Name ---
-        $residentName = $email; // Default fallback to email
-        
-        if (isset($residentCache[$email])) {
-            $residentName = $residentCache[$email];
-        } else {
-            // 2. Lookup user registration record using case-insensitive regex for robustness
-            $user = $usersCollection->findOne(
-                // Use 'i' flag for case-insensitive email match.
-                ['email' => ['$regex' => new MongoDB\BSON\Regex('^' . preg_quote($email) . '$', 'i')]], 
-                ['projection' => ['fullname' => 1]]
-            );
-            
-            if ($user && isset($user['fullname'])) {
-                $resolvedName = $user['fullname'];
-            } else {
-                $resolvedName = $email; 
-            }
-            
-            $residentName = $resolvedName;
-            $residentCache[$email] = $resolvedName; // Store in cache
-        }
-        
-        $req['resident_name'] = $residentName;
-
-        // PDF Fix for OLD Corrupted Records: Override "Resident" name with the resolved name/email
-        if (isset($req['resident_name']) && trim($req['resident_name']) === 'Resident') {
-            $req['resident_name'] = $residentName;
-        }
-
-        $finalRequests[] = $req;
-    }
-
-    echo json_encode($finalRequests);
-
-} catch (MongoDB\Driver\Exception\Exception $e) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(['error' => 'An unexpected error occurred: ' . $e->getMessage()]);
+$residentEmail = $_SESSION['email'] ?? '';
+if (!$residentEmail) {
+    echo json_encode([]);
+    exit;
 }
-?>
+
+$cursor = $issuanceCollection->find(
+    ['resident_email' => $residentEmail],
+    ['sort' => ['request_date' => -1]]
+);
+
+$data = [];
+foreach ($cursor as $r) {
+    $data[] = [
+        '_id' => (string)$r['_id'],
+        'document_type' => $r['document_type'] ?? '',
+
+        // Indigency
+        'purpose' => $r['purpose'] ?? '',
+        'certificate_for' => $r['certificate_for'] ?? '',
+        'certificate_other_relationship' => $r['certificate_other_relationship'] ?? '',
+        'certificate_for_fullname' => $r['certificate_for_fullname'] ?? '',
+
+        // Business clearance
+        'business_name' => $r['business_name'] ?? '',
+        'business_location' => $r['business_location'] ?? '',
+
+        // Shared
+        'reason' => $r['reason'] ?? '',
+        'request_date' => isset($r['request_date']) ? date('Y-m-d', strtotime($r['request_date'])) : '',
+        'request_time' => isset($r['request_time']) ? date('H:i', strtotime($r['request_time'])) : '',
+        'status' => $r['status'] ?? 'Pending'
+    ];
+}
+ 
+echo json_encode($data);

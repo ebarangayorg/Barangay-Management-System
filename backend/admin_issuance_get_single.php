@@ -1,51 +1,44 @@
 <?php
-// backend/admin_issuance_get_single.php
-require_once 'db_connect.php'; 
+require_once 'auth_admin.php';
+require_once 'config.php';
 
 header('Content-Type: application/json');
 
-if (!isset($_GET['id']) || empty($_GET['id'])) {
-    echo json_encode(['error' => 'Invalid request ID provided.']);
+$id = $_GET['id'] ?? '';
+
+if (!$id) {
+    echo json_encode(['error' => 'Missing ID']);
     exit;
 }
 
-$issuanceCollection = $database->selectCollection('issuances');
-$residentCollection = $database->selectCollection('residents');
-
 try {
-    // FIX: Convert the string ID from the URL parameter into a MongoDB ObjectId for primary lookup
-    $objectId = new MongoDB\BSON\ObjectId($_GET['id']);
-    
-    // 1. Find the issuance request
-    $request = $issuanceCollection->findOne(['_id' => $objectId]);
+    $doc = $issuanceCollection->findOne(['_id' => new MongoDB\BSON\ObjectId($id)]);
 
-    if (!$request) {
-        echo json_encode(['error' => 'Issuance request not found.']);
+    if (!$doc) {
+        echo json_encode(['error' => 'Not found']);
         exit;
     }
 
-    $request = (array) $request; 
-    
-    // FIX: Convert the primary _id to string 'id' for the modal
-    $request['id'] = (string) $request['_id']; 
+    echo json_encode([
+        'id' => (string)$doc['_id'],
+        'resident_name' => $doc['resident_name'] ?? '',
+        'resident_email' => $doc['resident_email'] ?? '',
+        'document_type' => $doc['document_type'] ?? '',
+        'purpose' => $doc['purpose'] ?? '',
+        'certificate_for' => $doc['certificate_for'] ?? '',
+        'certificate_for_fullname' => $doc['certificate_for_fullname'] ?? '',
+        'business_name' => $doc['business_name'] ?? '',
+        'business_location' => $doc['business_location'] ?? '',
+        'reason' => $doc['reason'] ?? '',
+        'request_date' => $doc['request_date'] ?? '',
+        'request_time' => $doc['request_time'] ?? '',
+        'status' => ucwords(strtolower($doc['status'] ?? 'Pending')),
 
-    // 2. CRITICAL FIX: Use resident_email for lookup
-    $residentEmailToLookup = $request['resident_email'];
+        'certificate_for' => $doc['certificate_for'] ?? '',
+        'certificate_for_fullname' => $doc['certificate_for_fullname'] ?? '',
+        'certificate_other_relationship' => $doc['certificate_other_relationship'] ?? ''
+    ]);
 
-    // Find resident details by email
-    $resident = $residentCollection->findOne(['email' => $residentEmailToLookup]);
-    
-    // Add resident name 
-    $request['resident_name'] = $resident ? $resident['full_name'] : $request['resident_name'];
-    $request['resident_db_id'] = $resident ? (string) $resident['_id'] : null;
-
-    echo json_encode($request);
-
-} catch (MongoDB\Driver\Exception\InvalidArgumentException $e) {
-    echo json_encode(['error' => 'Invalid ID format for MongoDB.']);
 } catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(['error' => 'MongoDB Query Error: ' . $e->getMessage()]);
+    echo json_encode(['error' => $e->getMessage()]);
 }
-
-exit;

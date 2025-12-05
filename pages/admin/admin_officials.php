@@ -285,7 +285,7 @@ function renderTable(data) {
                     <i class="bi bi-pencil-square"></i>
                 </button>
 
-                <button class="btn btn-warning btn-sm me-1"
+                <button class="btn btn-sm btn-secondary archive-btn"
                     onclick='openArchiveModal("${item._id}")'>
                     <i class="bi bi-archive"></i>
                 </button>

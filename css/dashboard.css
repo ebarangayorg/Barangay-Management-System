@@ -142,11 +142,21 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
     color: #e0a800;
     font-weight: bold;
 }
-.status.rejected {
-    background: #d9534f !important;
-    color: #fff !important;
+
+.status.unsettle {
+    color: #ff0000;
+    font-weight: bold;
 }
 
+.status.pending {
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.status.approved {
+    color: #0f9d33;
+    font-weight: bold;
+}
 
 /* ---------- GRID ---------- */
 .grid {
@@ -584,6 +594,10 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
         .pending { background: #f0ad4e; }
         .ready { background: #5cb85c; }
         .decline { background: #d9534f; }
+        .approved { background: #5cb85c; }
+        .settled { background: #e0a800; }
+        .rejected { background: #d9534f; }
+        .settled { background: #e0a800; }
         
 .hamburger {
     display: none;
@@ -779,7 +793,6 @@ select {
     overflow-y: auto !important;
 }
 
-<<<<<<< Updated upstream
 .timeline-event {
     padding: 8px 12px;
     border-left: 3px solid #4CAF50;
@@ -799,7 +812,6 @@ select {
     color: #4CAF50;
 }
 
-=======
 /* --- LAYOUT FIX (REQUIRED FOR NO SHIFTING) --- */
 .main-content-wrapper { 
     flex-grow: 1; 
@@ -812,5 +824,4 @@ select {
 /* Add or check these for status color styling */
 .status.pending { background: #f0ad4e; color: #fff; padding: 3px 6px; border-radius: 4px; }
 .status.readytopickup { background: #5cb85c; color: #fff; padding: 3px 6px; border-radius: 4px; }
-.status.decline { background: #d9534f; color: #fff; padding: 3px 6px; border-radius: 4px; }
->>>>>>> Stashed changes
+.status.settled { background: #5bc0de; color: #fff; padding: 3px 6px; border-radius: 4px; }

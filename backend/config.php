@@ -12,7 +12,6 @@ try {
     $contactsCollection = $database->contacts;
     $incidentsCollection = $database->incidents;
     $announcementCollection = $database->announcements;
-    // --- ADDED THE ISSUANCE COLLECTION HERE ---
     $issuanceCollection = $database->issuances; 
 } catch (Exception $e) {
     die("Error connecting to MongoDB: " . $e->getMessage());
