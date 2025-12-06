@@ -138,26 +138,6 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
     font-weight: bold;
 }
 
-.status.settled {
-    color: #e0a800;
-    font-weight: bold;
-}
-
-.status.unsettle {
-    color: #ff0000;
-    font-weight: bold;
-}
-
-.status.pending {
-    color: #ff0000;
-    font-weight: bold;
-}
-
-.status.approved {
-    color: #0f9d33;
-    font-weight: bold;
-}
-
 /* ---------- GRID ---------- */
 .grid {
   display: grid;
