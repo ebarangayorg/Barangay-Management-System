@@ -323,7 +323,11 @@ async function loadRequests() {
                 <td>${req.document_type}</td>
                 <td title="${reasonDisplay}">${truncate(reasonDisplay, 60)}</td>
                 <td>${req.request_date}</td>
-                <td>${req.status}</td>
+                <td>
+                    <span class="status ${getStatusClass(req.status)}">
+                        ${formatStatus(req.status)}
+                    </span>
+                </td>
                 <td>
                     <button class="btn btn-sm btn-info me-1 text-white view-btn"><i class="bi bi-eye"></i></button>
                     ${req.status==='Pending' ? `
@@ -611,6 +615,20 @@ document.getElementById("confirmCancel").addEventListener("click", async () => {
         showToast("Error cancelling request", "error");
     }
 });
+
+function getStatusClass(status) {
+    const s = status.toLowerCase();
+
+    if (s === "pending") return "pending";
+    if (s === "ready for pickup") return "ready";
+    if (s === "rejected") return "decline";
+
+    return "";
+}
+
+function formatStatus(status) {
+    return status.replace(/\b\w/g, c => c.toUpperCase());
+}
 
 // Search filter
 document.getElementById('searchInput').addEventListener('input', function(){

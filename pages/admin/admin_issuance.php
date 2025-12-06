@@ -104,7 +104,15 @@ $requests = iterator_to_array($issuanceCollection->find(
                             <td><?= htmlspecialchars($r->resident_name) ?></td>
                             <td><?= htmlspecialchars($r->document_type) ?></td>
                             <td><?= htmlspecialchars($r->request_date) ?></td>
-                            <td class="status-cell"><?= ucwords(htmlspecialchars($r->status)) ?></td>
+                            <td>
+                                <span class="status 
+                                    <?= strtolower($r->status) === 'pending' ? 'pending' : '' ?>
+                                    <?= strtolower($r->status) === 'ready for pickup' ? 'ready' : '' ?>
+                                    <?= strtolower($r->status) === 'rejected' ? 'decline' : '' ?>
+                                ">
+                                    <?= ucwords($r->status) ?>
+                                </span>
+                            </td>
                             <td class="d-flex gap-1">
                                 <a href="admin_issuance_print.php?id=<?= $r->_id ?>" target="_blank" class="btn btn-sm btn-warning"><i class="bi bi-printer"></i></a>
                                 <button class="btn btn-info btn-sm text-white" data-bs-toggle="modal" data-bs-target="#viewModal"
@@ -182,8 +190,8 @@ $requests = iterator_to_array($issuanceCollection->find(
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button class="btn btn-success" onclick="updateStatus()">Save Changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" onclick="updateStatus()">Save Changes</button>
             </div>
         </div>
     </div>
@@ -279,7 +287,16 @@ function updateStatus(){
     .then(data => {
         if(data.status==='success'){
             const row = document.querySelector(`#issuanceTable tr[data-id='${id}']`);
-            if(row) row.querySelector('.status-cell').textContent = status;
+            if(row) row.querySelector('span.status').textContent = status; 
+            const statusSpan = row.querySelector('span.status');
+            statusSpan.textContent = status;
+
+            statusSpan.classList.remove("pending", "ready", "decline");
+
+            if(status === "Pending") statusSpan.classList.add("pending");
+            if(status === "Ready for Pickup") statusSpan.classList.add("ready");
+            if(status === "Rejected") statusSpan.classList.add("decline");
+
             bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
         }
     });

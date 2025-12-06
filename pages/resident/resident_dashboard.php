@@ -133,7 +133,7 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
-      <form action="../../backend/update_resident_self.php" method="POST" enctype="multipart/form-data">
+      <form id="updateForm" action="../../backend/update_resident_self.php" method="POST" enctype="multipart/form-data">
         <div class="modal-body">
 
           <p class="text-muted">
@@ -170,10 +170,6 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
               <input class="form-control" name="occupation" value="<?= $resident->occupation ?>">
             </div>
             <div class="col-md-6">
-              <label>Email:</label>
-              <input class="form-control" name="email" value="<?= $resident->email ?>">
-            </div>
-            <div class="col-md-6">
               <label>Contact:</label>
               <input class="form-control" name="contact" value="<?= $resident->contact ?>">
             </div>
@@ -186,8 +182,24 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
                 <option value="Widowed"    <?= ($resident->civil_status == "Widowed") ? "selected" : "" ?>>Widowed</option>
               </select>
             </div>
+            <hr>
+            <h5>Contact Information</h5>
+            <p class="text-muted">Update your contact information, this is where we can reach you.</p>
+            <div class="col-md-6">
+              <label>Email:</label>
+              <input class="form-control" name="email" value="<?= $resident->email ?>">
+            </div>
+            <div class="col-md-6">
+              <input type="password" class="form-control" name="old_password" placeholder="Old Password">
+            </div>
+            <div class="col-md-6">
+              <label>Update Password:</label>
+              <input type="password" class="form-control" name="new_password" minlength="6" placeholder="New Password">
+            </div>
+            <div class="col-md-6">
+              <input type="password" class="form-control" name="confirm_password" minlength="6" placeholder="Confirm Password">
+            </div>
           </div>
-
           <hr>
 
           <!-- Read-only preview in grid -->
@@ -287,6 +299,30 @@ document.querySelector("input[name='profile_image']").addEventListener("change",
         preview.style.display = "none";
     }
 });
+<script>
+document.getElementById("updateForm").addEventListener("submit", function (e) {
+    let oldP = document.querySelector("input[name='old_password']").value.trim();
+    let newP = document.querySelector("input[name='new_password']").value.trim();
+    let conP = document.querySelector("input[name='confirm_password']").value.trim();
+
+    // If ANY password field is filled → Require ALL to be filled
+    if (newP !== "" || conP !== "") {
+
+        if (oldP === "") {
+            alert("Old password is required before changing password.");
+            e.preventDefault();
+            return;
+        }
+
+        if (newP !== conP) {
+            alert("New password and confirm password do not match.");
+            e.preventDefault();
+            return;
+        }
+    }
+});
+</script>
+
 </script>
 
 </body>
