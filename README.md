@@ -19,11 +19,75 @@ The **Barangay Management System (BMS)** is a software project developed to prov
 ### Snippet System Screenshot
 ![Home](https://github.com/user-attachments/assets/9b585468-8f13-4319-87e9-0404716700df)
 
+## Visit the Website
+[Click Here to Explore](https://barangay-management-system-deployment-production.up.railway.app/)
+
 > **Note:**  
 > - Due to system being under development, the features might get an update in the future.
 > - Some features may not function as intended, and the site might experience occasional crashes.
 > - The system may not be fully responsive across all devices, as it is under development.
+>
+>  **Account:** Use the default account for admin:
+>   
+>  | Role  | Email             | Password  |
+>  |-------|-------------------|-----------|
+>  | Admin | admin@gmail.com   | 123456    |
 
+
+## Guide To Run
+To run the system locally, do the following.
+> - **Clone this repository** or download it as a **ZIP file.**
+> - When cloning the repository, follow these steps.
+
+### Install Required Software
+1. **MongoDB Community Server**
+      - Database used by the system
+      - You can get it from here. [MongoDB](https://www.mongodb.com/try/download/community)
+2. **Composer (PHP Dependency Manager)**
+      - You can get it from here. [Composer](https://getcomposer.org/download/)
+      - Make sure composer works
+         ```bash
+          composer --version
+         ```
+3. **XAMPP (Apache + PHP)**
+      - You can get it from here. [Xampp](https://www.apachefriends.org/)
+      - Start `Apache`
+      - *(MySQL is not required because you're using MongoDB)*
+4. **MongoDB PHP Extension (PECL)** 
+      - Used so PHP can communicate with MongoDB.
+      - You can get it from here. [PECL Package](https://pecl.php.net/package/mongodb)
+      - The `php_mongodb.dll` must be placed inside this file location:
+         ```bash
+          xampp/php/ext/
+         ```
+      - Then add this line to `php.ini` 
+         ```bash
+          extension=mongodb
+         ``` 
+  
+5. Delete the `vendor/` folder and `composer.lock` file in the project and replace it using this command in terminal
+     ```bash
+      composer install
+     ```
+6. Create database `bms_db` on MongoDB Compass, add a collection `users`
+     - **Database Name:** *bms_db*
+     - **Collection:** *users* 
+     - Open **Mongo Shell** on MongoDB Compass and *do this command*
+         ```bash
+          user bms_db
+         
+          db.users.insertOne({
+            email: "admin@gmail.com",
+            password: "$2y$10$wHhX1lQYf8tZ5i7VtVdB/.2K7ZjL0/uXQx5tZlOa8MwKYZi5m6K3a",
+            role: "Barangay Staff",
+            created_at: new Date()
+          })
+         ```
+        >  **Note:** This will set a default account for admin:
+        >   
+        >  | Role  | Email             | Password  |
+        >  |-------|-------------------|-----------|
+        >  | Admin | admin@gmail.com   | 123456    |
 
 ## Collaborators Of Project
 <br>
