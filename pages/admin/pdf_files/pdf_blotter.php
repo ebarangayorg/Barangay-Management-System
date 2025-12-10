@@ -1,6 +1,16 @@
 <?php
+session_start();
 require_once "../../../backend/config.php";
 require_once "../../../backend/fpdf186/fpdf.php";
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'Barangay Staff') {
+    $_SESSION['toast'] = [
+        'msg'  => 'You are not authorized to access that page.',
+        'type' => 'error'
+    ];
+    header("Location: /Barangay-Management-System/pages/resident/resident_dashboard.php");
+    exit;
+}
 
 $id = $_GET['id'] ?? null;
 if (!$id) die("Invalid Blotter ID.");

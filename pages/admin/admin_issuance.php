@@ -2,11 +2,56 @@
 require_once '../../backend/auth_admin.php';
 require_once '../../backend/config.php';
 
-// Fetch only non-archived issuance requests
-$requests = iterator_to_array($issuanceCollection->find(
-    ['status' => ['$ne' => 'Archived']],
-    ['sort' => ['request_date' => -1]]
-));
+$requests = iterator_to_array(
+    $issuanceCollection->aggregate([
+        [
+            '$match' => [
+                'status' => ['$ne' => 'Archived']
+            ]
+        ],
+        [
+            '$addFields' => [
+                'normalized_time' => [
+                    '$cond' => [
+                        [
+                            '$eq' => [
+                                [ '$strLenCP' => '$request_time' ],
+                                8
+                            ]
+                        ],
+                        '$request_time',
+                        [
+                            '$concat' => [
+                                '$request_time',
+                                ':00'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ],
+        [
+            '$addFields' => [
+                'full_request_datetime' => [
+                    '$toDate' => [
+                        '$concat' => [
+                            '$request_date',
+                            "T",
+                            '$normalized_time'
+                        ]
+                    ]
+                ]
+            ]
+        ],
+        [
+            '$sort' => [
+                'full_request_datetime' => -1
+            ]
+        ]
+    ])
+);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -109,6 +154,7 @@ $requests = iterator_to_array($issuanceCollection->find(
                                     <?= strtolower($r->status) === 'pending' ? 'pending' : '' ?>
                                     <?= strtolower($r->status) === 'ready for pickup' ? 'ready' : '' ?>
                                     <?= strtolower($r->status) === 'rejected' ? 'decline' : '' ?>
+                                    <?= strtolower($r->status) === 'received' ? 'received' : '' ?>
                                 ">
                                     <?= ucwords($r->status) ?>
                                 </span>
@@ -186,6 +232,7 @@ $requests = iterator_to_array($issuanceCollection->find(
                         <option value="Pending">Pending</option>
                         <option value="Ready for Pickup">Ready For Pickup</option>
                         <option value="Rejected">Rejected</option>
+                        <option value="Received">Received</option>
                     </select>
                 </div>
             </div>
@@ -291,11 +338,13 @@ function updateStatus(){
             const statusSpan = row.querySelector('span.status');
             statusSpan.textContent = status;
 
-            statusSpan.classList.remove("pending", "ready", "decline");
+            statusSpan.classList.remove("pending", "ready", "received", "decline");
+
 
             if(status === "Pending") statusSpan.classList.add("pending");
             if(status === "Ready for Pickup") statusSpan.classList.add("ready");
             if(status === "Rejected") statusSpan.classList.add("decline");
+            if(status === "Received") statusSpan.classList.add("received");
 
             bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
         }

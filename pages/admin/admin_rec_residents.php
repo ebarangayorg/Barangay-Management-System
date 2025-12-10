@@ -88,7 +88,25 @@
             <?php
             require_once "../../backend/config.php";
 
-            $residents = $residentsCollection->find();
+            $residents = $residentsCollection->aggregate([
+                [
+                    '$lookup' => [
+                        'from' => 'users',
+                        'localField' => 'user_id',
+                        'foreignField' => '_id',
+                        'as' => 'user'
+                    ]
+                ],
+                [ '$unwind' => '$user' ],
+                [
+                    '$sort' => [
+                        'user.date_created' => -1
+                    ]
+                ]
+            ]);
+
+
+
 
             foreach ($residents as $r) {
 

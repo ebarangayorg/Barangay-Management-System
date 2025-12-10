@@ -18,7 +18,7 @@ $residentId = (string)$resident['_id'];
 $requests = iterator_to_array($issuanceCollection->find(
     [
         'resident_id' => $residentId,
-        'status' => ['$nin' => ['Archived','Cancelled','Active']]
+        'status' => ['$nin' => ['Archived','Cancelled','Active',]]
     ],
     ['sort' => ['request_date' => -1]]
 ));

@@ -1,5 +1,7 @@
 <?php
-require_once "backend/config.php"; 
+session_start();
+require_once 'backend/config.php';
+
 $announcementFilter = ['status' => 'active'];
 
 $announcements = $announcementCollection->find(

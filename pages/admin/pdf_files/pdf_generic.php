@@ -1,5 +1,8 @@
 <?php
-// simple fallback template
+session_start();
+require_once "../../backend/config.php";
+require_once "../../backend/fpdf186/fpdf.php";
+
 class GenericPDF extends FPDF {
     function Header(){
         $this->SetFont('Arial','B',14);

@@ -1,7 +1,7 @@
 <?php
-require_once "../../backend/auth_admin.php";  
-require_once "../../backend/config.php";
-require_once "../../backend/fpdf186/fpdf.php";
+require_once "../../../backend/auth_admin.php";  
+require_once "../../../backend/config.php";
+require_once "../../../backend/fpdf186/fpdf.php";
 
 class ResidencyPDF extends FPDF {
     function Header(){

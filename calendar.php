@@ -1,3 +1,7 @@
+<?php
+session_start();
+require_once 'backend/config.php';
+?>
 <!DOCTYPE html>
 
 <html lang="en">

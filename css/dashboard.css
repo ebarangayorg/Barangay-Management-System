@@ -133,30 +133,6 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
 
 .content { padding: 40px; width: 100%; }
 
-.status.active {
-    color: #0f9d33;
-    font-weight: bold;
-}
-
-.status.settled {
-    color: #e0a800;
-    font-weight: bold;
-}
-
-.status.unsettle {
-    color: #ff0000;
-    font-weight: bold;
-}
-
-.status.pending {
-    color: #ff0000;
-    font-weight: bold;
-}
-
-.status.approved {
-    color: #0f9d33;
-    font-weight: bold;
-}
 
 /* ---------- GRID ---------- */
 .grid {
@@ -594,6 +570,7 @@ body { background: #f3f6f5; min-height: 100vh; display: flex; }
         .pending { background: #f0ad4e; }
         .ready { background: #5cb85c; }
         .decline { background: #d9534f; }
+        .received { background: #666; }
         .approved { background: #5cb85c; }
         .settled { background: #e0a800; }
         .rejected { background: #d9534f; }
@@ -821,4 +798,5 @@ select {
     min-width: 0; 
 }
 
-.status.settled { background: #5bc0de; color: #fff; padding: 3px 6px; border-radius: 4px; }
+.status.settled { background: #e0a800; color: #fff; padding: 3px 6px; border-radius: 4px; }
+.status.active { background: #2e9f43; color: #fff; padding: 3px 6px; border-radius: 4px; }

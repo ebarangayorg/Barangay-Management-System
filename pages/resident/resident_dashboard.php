@@ -30,6 +30,7 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../css/dashboard.css" />
+    <link rel="stylesheet" href="../../css/toast.css" />
 </head>
 <body>
 
@@ -82,7 +83,7 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
                         ? "../../uploads/residents/" . $resident['profile_image']
                         : "../../assets/img/profile.jpg";
                     ?>
-                    <img src="<?= $profileImg ?>" alt="" style="margin-top:-25px;border-radius: 20px;">
+                    <img src="<?= $profileImg ?>" alt="" style="width: auto; height: 300px; object-fit: cover;border-radius: 20px; margin-top: -25px">
 
 
                 <strong style="margin-top:8px;"><?= $resident['first_name'] . " " . $resident['last_name'] ?></strong><br>
@@ -216,7 +217,7 @@ $residentId = isset($resident['_id']) ? (string)$resident['_id'] : null;
   </div>
 </div>
 
-
+<div id="toast" class="toast"></div>
 <script src="../../assets/js/calendar.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -287,7 +288,27 @@ document.querySelector("input[name='profile_image']").addEventListener("change",
         preview.style.display = "none";
     }
 });
+
+function showToast(message, type = "error") {
+    const t = document.getElementById("toast");
+
+    // Reset classes (VERY IMPORTANT)
+    t.className = "toast";
+
+    t.textContent = message;
+    t.classList.add(type);
+    t.classList.add("show");
+
+    setTimeout(() => {
+        t.classList.remove("show");
+    }, 3000);
+}
 </script>
+<?php if (isset($_SESSION['toast'])): ?>
+<script>
+    showToast("<?= $_SESSION['toast']['msg'] ?>", "<?= $_SESSION['toast']['type'] ?>");
+</script>
+<?php unset($_SESSION['toast'], $_SESSION['toast_type']); endif; ?>
 
 </body>
 </html>
