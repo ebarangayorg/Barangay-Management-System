@@ -127,7 +127,7 @@ $requests = iterator_to_array(
                 <tr>
                     <th>Resident Name</th>
                     <th>Document Type</th>
-                    <th>Request Date</th>
+                    <th>Request Date & Time</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -148,7 +148,7 @@ $requests = iterator_to_array(
                         >
                             <td><?= htmlspecialchars($r->resident_name) ?></td>
                             <td><?= htmlspecialchars($r->document_type) ?></td>
-                            <td><?= htmlspecialchars($r->request_date) ?></td>
+                            <td><?= htmlspecialchars($r->request_date . ' ' . $r->request_time) ?></td>
                             <td>
                                 <span class="status 
                                     <?= strtolower($r->status) === 'pending' ? 'pending' : '' ?>
@@ -186,6 +186,7 @@ $requests = iterator_to_array(
                 <p><strong>Resident Name:</strong> <span id="v_name"></span></p>
                 <p><strong>Document Type:</strong> <span id="v_doc"></span></p>
                 <p><strong>Request Date:</strong> <span id="v_date"></span></p>
+                <p><strong>Request Time:</strong> <span id="v_time"></span></p>
                 <p><strong>Status:</strong> <span id="v_status"></span></p>
                 <div id="v_extra"></div>
             </div>
@@ -272,6 +273,7 @@ function viewRequest(id){
         document.getElementById('v_name').textContent = data.resident_name || 'N/A';
         document.getElementById('v_doc').textContent = data.document_type || 'N/A';
         document.getElementById('v_date').textContent = data.request_date || 'N/A';
+        document.getElementById('v_time').textContent = data.request_time || 'N/A';
         document.getElementById('v_status').textContent = data.status || 'Pending';
 
         let extraHTML = '';

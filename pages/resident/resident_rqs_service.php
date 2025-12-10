@@ -15,13 +15,21 @@ $fullname = trim($resident['first_name'] . ' ' . ($resident['middle_name'] ?? ''
 
 $residentId = (string)$resident['_id'];
 
-$requests = iterator_to_array($issuanceCollection->find(
-    [
-        'resident_id' => $residentId,
-        'status' => ['$nin' => ['Archived','Cancelled','Active',]]
-    ],
-    ['sort' => ['request_date' => -1]]
-));
+$requests = iterator_to_array(
+    $issuanceCollection->find(
+        [
+            'resident_id' => $residentId,
+            'status' => ['$nin' => ['Archived','Cancelled','Active', 'Received']]
+        ],
+        [
+            'sort' => [
+                'request_date' => -1,
+                'request_time' => -1
+            ]
+        ]
+    )
+);
+
 
 ?>
 <!DOCTYPE html>
@@ -96,7 +104,7 @@ td { max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ell
                     <tr>
                         <th>Document Type</th>
                         <th>Reason</th>
-                        <th>Request Date</th>
+                        <th>Request Date & Time</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -188,6 +196,7 @@ td { max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ell
       <div class="modal-body">
         <p><strong>Document Type:</strong> <span id="v-doc-type"></span></p>
         <p><strong>Date:</strong> <span id="v-date"></span></p>
+        <p><strong>Time:</strong> <span id="v-time"></span></p>
         <p><strong>Status:</strong> <span id="v-status"></span></p>
         <p id="v-reason-row"><strong>Reason:</strong> <span id="v-reason"></span></p>
         <div id="v-extra" class="mt-2"></div>
@@ -273,37 +282,53 @@ function showToast(message, type='success', timeout=2500) {
 // Helper to truncate long text
 const truncate = (str, n = 40) => str ? (str.length > n ? str.substring(0, n) + "..." : str) : '';
 
+function getStatusBadge(status) {
+    switch(status) {
+        case "Pending":
+            return `<span class="badge bg-warning text-dark">Pending</span>`;
+        case "Ready For Pickup":
+            return `<span class="badge bg-success">Ready For Pickup</span>`;
+        case "Rejected":
+            return `<span class="badge bg-danger">Rejected</span>`;
+        default:
+            return `<span class="badge bg-secondary">${status}</span>`;
+    }
+}
+
 // Load requests
 async function loadRequests() {
     const table = document.getElementById('requestTable');
     table.innerHTML = '<tr><td colspan="5" class="text-center">Loading...</td></tr>';
     try {
         const res = await fetch("../../backend/issuance_get.php");
-        const data = await res.json();
+        let data = await res.json();
+
         if (!data.length) {
             table.innerHTML = '<tr><td colspan="5" class="text-center">No requests found.</td></tr>';
             return;
         }
 
-        // Filter: exclude Archived, Cancelled, Active
-        const filtered = data.filter(r => !['Archived','Cancelled','Active'].includes(r.status));
+        // Filter out unwanted statuses
+        let filtered = data.filter(r => !['Archived','Cancelled','Active','Received'].includes(r.status));
 
+        // Sort by date + time descending
+        filtered.sort((a, b) => {
+            const dateA = new Date(`${a.request_date}T${a.request_time}`);
+            const dateB = new Date(`${b.request_date}T${b.request_time}`);
+            return dateB - dateA; // descending
+        });
+
+        // Generate table rows
         const rows = filtered.map(req => {
-            // Build reason display. For Indigency show purpose + reason (if present)
-            let reasonDisplay = '';
-            if (req.document_type === 'Certificate of Indigency') {
-                const p = req.purpose ? req.purpose : '';
-                const rtxt = req.reason ? req.reason : '';
-                reasonDisplay = (p && rtxt) ? `${p} — ${rtxt}` : (p || rtxt || '');
-            } else {
-                reasonDisplay = req.reason || '';
-            }
+            let reasonDisplay = req.document_type === 'Certificate of Indigency'
+                ? [req.purpose, req.reason].filter(Boolean).join(' — ')
+                : req.reason || '';
 
-            const businessName = req.business_name ? req.business_name : '';
-            const businessLocation = req.business_location ? req.business_location : '';
-            const certificateFor = req.certificate_for ? req.certificate_for : '';
-            const certificateOtherRelationship = req.certificate_other_relationship ? req.certificate_other_relationship : '';
-            const certificateForFullname = req.certificate_for_fullname ? req.certificate_for_fullname : '';
+            const businessName = req.business_name || '';
+            const businessLocation = req.business_location || '';
+            const certificateFor = req.certificate_for || '';
+            const certificateOtherRelationship = req.certificate_other_relationship || '';
+            const certificateForFullname = req.certificate_for_fullname || '';
 
             return `
             <tr
@@ -322,8 +347,8 @@ async function loadRequests() {
             >
                 <td>${req.document_type}</td>
                 <td title="${reasonDisplay}">${truncate(reasonDisplay, 60)}</td>
-                <td>${req.request_date}</td>
-                <td>${req.status}</td>
+                <td>${req.request_date} ${req.request_time}</td>
+                <td>${getStatusBadge(req.status)}</td>
                 <td>
                     <button class="btn btn-sm btn-info me-1 text-white view-btn"><i class="bi bi-eye"></i></button>
                     ${req.status==='Pending' ? `
@@ -342,6 +367,7 @@ async function loadRequests() {
     }
 }
 
+
 // Attach buttons dynamically
 function attachRowButtons() {
     // VIEW
@@ -359,6 +385,7 @@ function attachRowButtons() {
 
             document.getElementById("v-doc-type").innerText = doc;
             document.getElementById("v-date").innerText = tr.dataset.date;
+            document.getElementById("v-time").innerText = tr.dataset.time;
             document.getElementById("v-status").innerText = tr.dataset.status;
 
             // clean extra area
