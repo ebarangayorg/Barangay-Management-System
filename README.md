@@ -31,7 +31,7 @@ The **Barangay Management System (BMS)** is a software project developed to prov
 >   
 >  | Role  | Email             | Password  |
 >  |-------|-------------------|-----------|
->  | Admin | admin@gmail.com   | 123456    |
+>  | Admin | admin@gmail.com   | admin123  |
 
 
 ## Guide To Run
@@ -78,16 +78,23 @@ To run the system locally, do the following.
          
           db.users.insertOne({
             email: "admin@gmail.com",
-            password: "$2y$10$wHhX1lQYf8tZ5i7VtVdB/.2K7ZjL0/uXQx5tZlOa8MwKYZi5m6K3a",
+            password: "admin123",
             role: "Barangay Staff",
             created_at: new Date()
           })
          ```
+    - Paste the *password* on the `hash_password.php` file in the project, and run this on terminal
+         ```bash
+          cd backend
+          php hash_password.php
+         ```
+    - Copy the **New Hash Password** and replace the password `admin123` on the collection
         >  **Note:** This will set a default account for admin:
         >   
         >  | Role  | Email             | Password  |
         >  |-------|-------------------|-----------|
-        >  | Admin | admin@gmail.com   | 123456    |
+        >  | Admin | admin@gmail.com   | admin123  |
+  
 
 ## Collaborators Of Project
 <br>
