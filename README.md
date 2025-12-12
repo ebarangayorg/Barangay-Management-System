@@ -88,7 +88,7 @@ To run the system locally, do the following.
           cd backend
           php hash_password.php
          ```
-    - Copy the **New Hash Password** and replace the password `admin123` on the collection
+    - Copy the **New Hash Password** and replace the password `admin123` on the MongoDB collection
         >  **Note:** This will set a default account for admin:
         >   
         >  | Role  | Email             | Password  |
