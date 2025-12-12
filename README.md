@@ -74,7 +74,7 @@ To run the system locally, do the following.
      - **Collection:** *users* 
      - Open **Mongo Shell** on MongoDB Compass and *do this command*
          ```bash
-          user bms_db
+          use bms_db
          
           db.users.insertOne({
             email: "admin@gmail.com",
