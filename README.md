@@ -29,9 +29,10 @@ The **Barangay Management System (BMS)** is a software project developed to prov
 >
 >  **Account:** Use the default account for admin:
 >   
->  | Role  | Email             | Password  |
->  |-------|-------------------|-----------|
->  | Admin | admin@gmail.com   | admin123  |
+>  | Role     | Email               | Password  |
+>  |----------|---------------------|-----------|
+>  | Admin    | admin@gmail.com     | admin123  |
+>  | Resident | sunshine@gmail.com  | sun123    | 
 
 
 ## Guide To Run
