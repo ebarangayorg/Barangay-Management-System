@@ -32,7 +32,7 @@ The **Barangay Management System (BMS)** is a software project developed to prov
 >  | Role     | Email               | Password  |
 >  |----------|---------------------|-----------|
 >  | Admin    | admin@gmail.com     | admin123  |
->  | Resident | sunshine@gmail.com  | sun123    | 
+>  | Resident | user@gmail.com      | sun123    | 
 
 
 ## Guide To Run
